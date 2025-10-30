@@ -1,0 +1,22 @@
+name: ultimate_shared
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+resolution: workspace
+
+environment:
+  sdk: ^3.9.2
+
+# Add regular dependencies here.
+dependencies:
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  web_socket_channel: ^3.0.3
+  # path: ^1.9.0
+
+dev_dependencies:
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  lints: ^6.0.0
+  test: ^1.25.6

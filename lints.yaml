@@ -1,0 +1,27 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - always_use_package_imports
+    - parameter_assignments
+    - prefer_const_declarations
+    - prefer_const_constructors
+    - constant_identifier_names
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - unnecessary_lambdas
+    - use_colored_box
+    - use_decorated_box
+    - use_enums
+    - use_raw_strings
+    - use_named_constants
+    - use_null_aware_elements
+
+analyzer:
+  exclude:
+    - "*.g.dart"
+    - "*.freezed.dart"
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
