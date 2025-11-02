@@ -40,7 +40,7 @@ final class LobbyProvider extends $NotifierProvider<Lobby, LobbyModel> {
   }
 }
 
-String _$lobbyHash() => r'ba673b250e9cb1d2cac770ccb2901b5a187e1a0d';
+String _$lobbyHash() => r'b686e3906d83b957e2308d4cc90f993ac6b268ff';
 
 abstract class _$Lobby extends $Notifier<LobbyModel> {
   LobbyModel build();

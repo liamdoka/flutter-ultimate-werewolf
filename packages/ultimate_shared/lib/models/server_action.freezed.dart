@@ -814,7 +814,7 @@ as List<PlayerModel>,
 /// @nodoc
 mixin _$PlayerModel {
 
- String get socketId; String get nickname; bool get isReady;
+ String get id; String get nickname; String get roomCode; bool get isReady;
 /// Create a copy of PlayerModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -827,16 +827,16 @@ $PlayerModelCopyWith<PlayerModel> get copyWith => _$PlayerModelCopyWithImpl<Play
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlayerModel&&(identical(other.socketId, socketId) || other.socketId == socketId)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.isReady, isReady) || other.isReady == isReady));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlayerModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.isReady, isReady) || other.isReady == isReady));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,socketId,nickname,isReady);
+int get hashCode => Object.hash(runtimeType,id,nickname,roomCode,isReady);
 
 @override
 String toString() {
-  return 'PlayerModel(socketId: $socketId, nickname: $nickname, isReady: $isReady)';
+  return 'PlayerModel(id: $id, nickname: $nickname, roomCode: $roomCode, isReady: $isReady)';
 }
 
 
@@ -847,7 +847,7 @@ abstract mixin class $PlayerModelCopyWith<$Res>  {
   factory $PlayerModelCopyWith(PlayerModel value, $Res Function(PlayerModel) _then) = _$PlayerModelCopyWithImpl;
 @useResult
 $Res call({
- String socketId, String nickname, bool isReady
+ String id, String nickname, String roomCode, bool isReady
 });
 
 
@@ -864,10 +864,11 @@ class _$PlayerModelCopyWithImpl<$Res>
 
 /// Create a copy of PlayerModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? socketId = null,Object? nickname = null,Object? isReady = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? roomCode = null,Object? isReady = null,}) {
   return _then(_self.copyWith(
-socketId: null == socketId ? _self.socketId : socketId // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,roomCode: null == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -951,10 +952,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String socketId,  String nickname,  bool isReady)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String roomCode,  bool isReady)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PlayerModel() when $default != null:
-return $default(_that.socketId,_that.nickname,_that.isReady);case _:
+return $default(_that.id,_that.nickname,_that.roomCode,_that.isReady);case _:
   return orElse();
 
 }
@@ -972,10 +973,10 @@ return $default(_that.socketId,_that.nickname,_that.isReady);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String socketId,  String nickname,  bool isReady)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String roomCode,  bool isReady)  $default,) {final _that = this;
 switch (_that) {
 case _PlayerModel():
-return $default(_that.socketId,_that.nickname,_that.isReady);}
+return $default(_that.id,_that.nickname,_that.roomCode,_that.isReady);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -989,10 +990,10 @@ return $default(_that.socketId,_that.nickname,_that.isReady);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String socketId,  String nickname,  bool isReady)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String roomCode,  bool isReady)?  $default,) {final _that = this;
 switch (_that) {
 case _PlayerModel() when $default != null:
-return $default(_that.socketId,_that.nickname,_that.isReady);case _:
+return $default(_that.id,_that.nickname,_that.roomCode,_that.isReady);case _:
   return null;
 
 }
@@ -1004,11 +1005,12 @@ return $default(_that.socketId,_that.nickname,_that.isReady);case _:
 @JsonSerializable()
 
 class _PlayerModel implements PlayerModel {
-  const _PlayerModel({required this.socketId, required this.nickname, this.isReady = false});
+  const _PlayerModel({required this.id, required this.nickname, required this.roomCode, this.isReady = false});
   factory _PlayerModel.fromJson(Map<String, dynamic> json) => _$PlayerModelFromJson(json);
 
-@override final  String socketId;
+@override final  String id;
 @override final  String nickname;
+@override final  String roomCode;
 @override@JsonKey() final  bool isReady;
 
 /// Create a copy of PlayerModel
@@ -1024,16 +1026,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerModel&&(identical(other.socketId, socketId) || other.socketId == socketId)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.isReady, isReady) || other.isReady == isReady));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.isReady, isReady) || other.isReady == isReady));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,socketId,nickname,isReady);
+int get hashCode => Object.hash(runtimeType,id,nickname,roomCode,isReady);
 
 @override
 String toString() {
-  return 'PlayerModel(socketId: $socketId, nickname: $nickname, isReady: $isReady)';
+  return 'PlayerModel(id: $id, nickname: $nickname, roomCode: $roomCode, isReady: $isReady)';
 }
 
 
@@ -1044,7 +1046,7 @@ abstract mixin class _$PlayerModelCopyWith<$Res> implements $PlayerModelCopyWith
   factory _$PlayerModelCopyWith(_PlayerModel value, $Res Function(_PlayerModel) _then) = __$PlayerModelCopyWithImpl;
 @override @useResult
 $Res call({
- String socketId, String nickname, bool isReady
+ String id, String nickname, String roomCode, bool isReady
 });
 
 
@@ -1061,10 +1063,11 @@ class __$PlayerModelCopyWithImpl<$Res>
 
 /// Create a copy of PlayerModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? socketId = null,Object? nickname = null,Object? isReady = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? roomCode = null,Object? isReady = null,}) {
   return _then(_PlayerModel(
-socketId: null == socketId ? _self.socketId : socketId // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,roomCode: null == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

@@ -48,4 +48,4 @@ final class ServerHandlerProvider
   }
 }
 
-String _$serverHandlerHash() => r'e51c28472efc527a6ef787f57a9c15f6dd49693f';
+String _$serverHandlerHash() => r'56be644f399f480a9f0cef16507c2e1d87256867';

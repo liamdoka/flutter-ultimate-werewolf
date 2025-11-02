@@ -84,14 +84,16 @@ const _$LobbyStateEnumMap = {
 };
 
 _PlayerModel _$PlayerModelFromJson(Map<String, dynamic> json) => _PlayerModel(
-  socketId: json['socketId'] as String,
+  id: json['id'] as String,
   nickname: json['nickname'] as String,
+  roomCode: json['roomCode'] as String,
   isReady: json['isReady'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PlayerModelToJson(_PlayerModel instance) =>
     <String, dynamic>{
-      'socketId': instance.socketId,
+      'id': instance.id,
       'nickname': instance.nickname,
+      'roomCode': instance.roomCode,
       'isReady': instance.isReady,
     };

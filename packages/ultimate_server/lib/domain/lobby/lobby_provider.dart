@@ -10,8 +10,12 @@ class Lobby extends _$Lobby {
 
   @override
   LobbyModel? build(String id) {
+
+    print("building lobby provider");
+
     final stream = ref.watch(lobbyServiceProvider).streamLobbyById(id);
     final subscription = stream.listen((lobby) {
+      print("Received Lobby");
       state = lobby;
     });
 

@@ -57,7 +57,7 @@ final class LobbyProvider extends $NotifierProvider<Lobby, LobbyModel?> {
   }
 }
 
-String _$lobbyHash() => r'9556037ae7a636389f116b6a41de010280ac768f';
+String _$lobbyHash() => r'a888fe416aa85b6b4078b162bb6d5b4ab5eebfa2';
 
 final class LobbyFamily extends $Family
     with

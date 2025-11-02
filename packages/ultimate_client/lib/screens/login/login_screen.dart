@@ -29,6 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return Column(
       spacing: BigSpacing.lg,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text("Ultimate Werewolf", style: context.fonts.headlineLarge),
         Container(

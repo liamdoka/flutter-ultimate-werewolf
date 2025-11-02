@@ -49,8 +49,9 @@ enum LobbyState { waiting, starting, running, ended }
 @freezed
 sealed class PlayerModel with _$PlayerModel {
   const factory PlayerModel({
-    required String socketId,
+    required String id,
     required String nickname,
+    required String roomCode,
     @Default(false) bool isReady,
   }) = _PlayerModel;
 
