@@ -5,8 +5,9 @@ import 'package:ultimate_client/domain/lobby/lobby_provider.dart';
 import 'package:ultimate_client/domain/models/client_model.dart';
 import 'package:ultimate_client/router/router.dart';
 import 'package:ultimate_client/router/router.gr.dart';
-import 'package:ultimate_shared/models/client_action.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/actions/actions.dart';
+import 'package:ultimate_shared/models/actions/client_action.dart';
+import 'package:ultimate_shared/models/actions/server_action.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'client_provider.g.dart';
@@ -41,7 +42,13 @@ class Client extends _$Client {
 
   void sendServerAction(ServerAction action) {
     print("Sent: $action");
-    final json = action.toJson();
+
+    final payload = ActionModel(
+      type: ActionType.server,
+      payload: action
+    );
+    final json = payload.toJson();
+
     state.socket.sink.add(jsonEncode(json));
   }
 

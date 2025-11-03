@@ -3,7 +3,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 import 'package:ultimate_server/handlers.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/actions/actions.dart';
 import 'package:ultimate_shared/utils/id.dart';
 
 Future<void> main() async {
@@ -16,9 +16,9 @@ Future<void> main() async {
     print("Connected: ${socket.id}");
     handler.socketService.addSocket(socket);
     socket.stream
-        .map<ServerAction>(ServerAction.fromDynamic)
+        .map(ActionModel.fromDynamic)
         .listen(
-          (action) => handler.handleServerAction(action, socket: socket),
+          (action) => handler.handleAction(action, socket: socket),
           onDone: () => handler.socketService.removeSocketById(socket.id),
         );
   });

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ultimate_shared/models/lobby_model.dart';
 
 part 'server_action.freezed.dart';
 part 'server_action.g.dart';
@@ -25,33 +26,4 @@ sealed class ServerAction with _$ServerAction {
     final json = jsonDecode(message.toString()) as Map<String, dynamic>;
     return ServerAction.fromJson(json);
   }
-}
-
-@freezed
-sealed class LobbyModel with _$LobbyModel {
-  const factory LobbyModel({
-    required String id,
-    String? admin,
-    @Default(LobbyState.waiting) LobbyState state,
-    @Default(90) int discussionTime,
-    @Default([]) List<PlayerModel> players,
-  }) = _LobbyModel;
-
-  factory LobbyModel.fromJson(Map<String, dynamic> json) =>
-      _$LobbyModelFromJson(json);
-}
-
-enum LobbyState { waiting, starting, running, ended }
-
-@freezed
-sealed class PlayerModel with _$PlayerModel {
-  const factory PlayerModel({
-    required String id,
-    required String nickname,
-    required String roomCode,
-    @Default(false) bool isReady,
-  }) = _PlayerModel;
-
-  factory PlayerModel.fromJson(Map<String, dynamic> json) =>
-      _$PlayerModelFromJson(json);
 }

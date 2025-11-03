@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ultimate_client/constants/sizes.dart';
 import 'package:ultimate_client/domain/client/client_provider.dart';
 import 'package:ultimate_client/utils/theme_extensions.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/actions/server_action.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:ultimate_server/domain/player/player_service.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/player_model.dart';
 
 class MockPlayerService implements IPlayerService {
   final _players = <String, PlayerModel>{};

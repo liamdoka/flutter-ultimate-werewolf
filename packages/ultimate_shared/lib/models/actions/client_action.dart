@@ -7,10 +7,13 @@ part 'client_action.freezed.dart';
 sealed class ClientAction with _$ClientAction {
   const factory ClientAction.changeSocket(WebSocketChannel socket) =
       ClientChangeSocket;
+
   const factory ClientAction.changeNickname(String nickname) =
       ClientChangeNickname;
+
   const factory ClientAction.changeRoomCode(String roomCode) =
       ClientChangeRoomCode;
+
   const factory ClientAction.joinRoom(String nickname, String roomCode) =
       ClientJoinRoom;
 }

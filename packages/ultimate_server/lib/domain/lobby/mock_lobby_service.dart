@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/lobby_model.dart';
+import 'package:ultimate_shared/models/player_model.dart';
 import 'package:ultimate_shared/utils/id.dart';
 
 class MockLobbyService implements ILobbyService {
   late final StreamController<Map<String, LobbyModel>> _controller =
-  StreamController.broadcast(onListen: () => _lobbies);
+      StreamController.broadcast(onListen: () => _lobbies);
 
   final _lobbies = <String, LobbyModel>{};
 

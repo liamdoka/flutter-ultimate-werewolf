@@ -7,7 +7,7 @@ import 'package:ultimate_client/domain/lobby/lobby_provider.dart';
 import 'package:ultimate_client/router/router.gr.dart';
 import 'package:ultimate_client/screens/lobby/widgets/lobby_code_widget.dart';
 import 'package:ultimate_client/utils/theme_extensions.dart';
-import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/models/player_model.dart';
 
 @RoutePage()
 class LobbyScreen extends ConsumerWidget {
@@ -104,7 +104,9 @@ class ClientPlayerTile extends ConsumerWidget {
       style: TextButton.styleFrom(
         backgroundColor: context.colors.surfaceContainerHigh,
       ),
-      onPressed: () {},
+      onPressed: () {
+        // TODO: context menu here
+      },
       child: Row(
         spacing: Spacing.xs,
         children: [
