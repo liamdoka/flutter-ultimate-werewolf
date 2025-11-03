@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClientModel {
 
- String get id; WebSocketChannel get socket; String? get nickname; String? get roomCode;
+ WebSocketChannel get socket; String? get nickname; String? get roomCode;
 /// Create a copy of ClientModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ClientModelCopyWith<ClientModel> get copyWith => _$ClientModelCopyWithImpl<Clie
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientModel&&(identical(other.id, id) || other.id == id)&&(identical(other.socket, socket) || other.socket == socket)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientModel&&(identical(other.socket, socket) || other.socket == socket)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,socket,nickname,roomCode);
+int get hashCode => Object.hash(runtimeType,socket,nickname,roomCode);
 
 @override
 String toString() {
-  return 'ClientModel(id: $id, socket: $socket, nickname: $nickname, roomCode: $roomCode)';
+  return 'ClientModel(socket: $socket, nickname: $nickname, roomCode: $roomCode)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ClientModelCopyWith<$Res>  {
   factory $ClientModelCopyWith(ClientModel value, $Res Function(ClientModel) _then) = _$ClientModelCopyWithImpl;
 @useResult
 $Res call({
- String id, WebSocketChannel socket, String? nickname, String? roomCode
+ WebSocketChannel socket, String? nickname, String? roomCode
 });
 
 
@@ -62,10 +62,9 @@ class _$ClientModelCopyWithImpl<$Res>
 
 /// Create a copy of ClientModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? socket = null,Object? nickname = freezed,Object? roomCode = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? socket = null,Object? nickname = freezed,Object? roomCode = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,socket: null == socket ? _self.socket : socket // ignore: cast_nullable_to_non_nullable
+socket: null == socket ? _self.socket : socket // ignore: cast_nullable_to_non_nullable
 as WebSocketChannel,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,roomCode: freezed == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -150,10 +149,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  WebSocketChannel socket,  String? nickname,  String? roomCode)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( WebSocketChannel socket,  String? nickname,  String? roomCode)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ClientModel() when $default != null:
-return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);case _:
+return $default(_that.socket,_that.nickname,_that.roomCode);case _:
   return orElse();
 
 }
@@ -171,10 +170,10 @@ return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  WebSocketChannel socket,  String? nickname,  String? roomCode)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( WebSocketChannel socket,  String? nickname,  String? roomCode)  $default,) {final _that = this;
 switch (_that) {
 case _ClientModel():
-return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);}
+return $default(_that.socket,_that.nickname,_that.roomCode);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -188,10 +187,10 @@ return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  WebSocketChannel socket,  String? nickname,  String? roomCode)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( WebSocketChannel socket,  String? nickname,  String? roomCode)?  $default,) {final _that = this;
 switch (_that) {
 case _ClientModel() when $default != null:
-return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);case _:
+return $default(_that.socket,_that.nickname,_that.roomCode);case _:
   return null;
 
 }
@@ -203,10 +202,9 @@ return $default(_that.id,_that.socket,_that.nickname,_that.roomCode);case _:
 
 
 class _ClientModel extends ClientModel {
-  const _ClientModel({required this.id, required this.socket, this.nickname, this.roomCode}): super._();
+  const _ClientModel({required this.socket, this.nickname, this.roomCode}): super._();
   
 
-@override final  String id;
 @override final  WebSocketChannel socket;
 @override final  String? nickname;
 @override final  String? roomCode;
@@ -221,16 +219,16 @@ _$ClientModelCopyWith<_ClientModel> get copyWith => __$ClientModelCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientModel&&(identical(other.id, id) || other.id == id)&&(identical(other.socket, socket) || other.socket == socket)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientModel&&(identical(other.socket, socket) || other.socket == socket)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,socket,nickname,roomCode);
+int get hashCode => Object.hash(runtimeType,socket,nickname,roomCode);
 
 @override
 String toString() {
-  return 'ClientModel(id: $id, socket: $socket, nickname: $nickname, roomCode: $roomCode)';
+  return 'ClientModel(socket: $socket, nickname: $nickname, roomCode: $roomCode)';
 }
 
 
@@ -241,7 +239,7 @@ abstract mixin class _$ClientModelCopyWith<$Res> implements $ClientModelCopyWith
   factory _$ClientModelCopyWith(_ClientModel value, $Res Function(_ClientModel) _then) = __$ClientModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, WebSocketChannel socket, String? nickname, String? roomCode
+ WebSocketChannel socket, String? nickname, String? roomCode
 });
 
 
@@ -258,10 +256,9 @@ class __$ClientModelCopyWithImpl<$Res>
 
 /// Create a copy of ClientModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? socket = null,Object? nickname = freezed,Object? roomCode = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? socket = null,Object? nickname = freezed,Object? roomCode = freezed,}) {
   return _then(_ClientModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,socket: null == socket ? _self.socket : socket // ignore: cast_nullable_to_non_nullable
+socket: null == socket ? _self.socket : socket // ignore: cast_nullable_to_non_nullable
 as WebSocketChannel,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,roomCode: freezed == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String?,

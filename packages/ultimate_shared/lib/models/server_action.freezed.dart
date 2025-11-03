@@ -15,12 +15,12 @@ ServerAction _$ServerActionFromJson(
   Map<String, dynamic> json
 ) {
         switch (json['runtimeType']) {
-                  case 'createRoom':
-          return ServerCreateRoom.fromJson(
+                  case 'createLobby':
+          return ServerCreateLobby.fromJson(
             json
           );
-                case 'joinRoom':
-          return ServerJoinRoom.fromJson(
+                case 'joinLobby':
+          return ServerJoinLobby.fromJson(
             json
           );
                 case 'updateLobby':
@@ -93,12 +93,12 @@ extension ServerActionPatterns on ServerAction {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServerCreateRoom value)?  createRoom,TResult Function( ServerJoinRoom value)?  joinRoom,TResult Function( ServerUpdateLobby value)?  updateLobby,TResult Function( ServerSyncLobby value)?  syncLobby,TResult Function( ServerUnknown value)?  unknown,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServerCreateLobby value)?  createLobby,TResult Function( ServerJoinLobby value)?  joinLobby,TResult Function( ServerUpdateLobby value)?  updateLobby,TResult Function( ServerSyncLobby value)?  syncLobby,TResult Function( ServerUnknown value)?  unknown,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case ServerCreateRoom() when createRoom != null:
-return createRoom(_that);case ServerJoinRoom() when joinRoom != null:
-return joinRoom(_that);case ServerUpdateLobby() when updateLobby != null:
+case ServerCreateLobby() when createLobby != null:
+return createLobby(_that);case ServerJoinLobby() when joinLobby != null:
+return joinLobby(_that);case ServerUpdateLobby() when updateLobby != null:
 return updateLobby(_that);case ServerSyncLobby() when syncLobby != null:
 return syncLobby(_that);case ServerUnknown() when unknown != null:
 return unknown(_that);case _:
@@ -119,12 +119,12 @@ return unknown(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServerCreateRoom value)  createRoom,required TResult Function( ServerJoinRoom value)  joinRoom,required TResult Function( ServerUpdateLobby value)  updateLobby,required TResult Function( ServerSyncLobby value)  syncLobby,required TResult Function( ServerUnknown value)  unknown,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServerCreateLobby value)  createLobby,required TResult Function( ServerJoinLobby value)  joinLobby,required TResult Function( ServerUpdateLobby value)  updateLobby,required TResult Function( ServerSyncLobby value)  syncLobby,required TResult Function( ServerUnknown value)  unknown,}){
 final _that = this;
 switch (_that) {
-case ServerCreateRoom():
-return createRoom(_that);case ServerJoinRoom():
-return joinRoom(_that);case ServerUpdateLobby():
+case ServerCreateLobby():
+return createLobby(_that);case ServerJoinLobby():
+return joinLobby(_that);case ServerUpdateLobby():
 return updateLobby(_that);case ServerSyncLobby():
 return syncLobby(_that);case ServerUnknown():
 return unknown(_that);}
@@ -141,12 +141,12 @@ return unknown(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServerCreateRoom value)?  createRoom,TResult? Function( ServerJoinRoom value)?  joinRoom,TResult? Function( ServerUpdateLobby value)?  updateLobby,TResult? Function( ServerSyncLobby value)?  syncLobby,TResult? Function( ServerUnknown value)?  unknown,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServerCreateLobby value)?  createLobby,TResult? Function( ServerJoinLobby value)?  joinLobby,TResult? Function( ServerUpdateLobby value)?  updateLobby,TResult? Function( ServerSyncLobby value)?  syncLobby,TResult? Function( ServerUnknown value)?  unknown,}){
 final _that = this;
 switch (_that) {
-case ServerCreateRoom() when createRoom != null:
-return createRoom(_that);case ServerJoinRoom() when joinRoom != null:
-return joinRoom(_that);case ServerUpdateLobby() when updateLobby != null:
+case ServerCreateLobby() when createLobby != null:
+return createLobby(_that);case ServerJoinLobby() when joinLobby != null:
+return joinLobby(_that);case ServerUpdateLobby() when updateLobby != null:
 return updateLobby(_that);case ServerSyncLobby() when syncLobby != null:
 return syncLobby(_that);case ServerUnknown() when unknown != null:
 return unknown(_that);case _:
@@ -166,11 +166,11 @@ return unknown(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String nickname)?  createRoom,TResult Function( String nickname,  String roomCode)?  joinRoom,TResult Function( LobbyModel lobby)?  updateLobby,TResult Function()?  syncLobby,TResult Function()?  unknown,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String nickname)?  createLobby,TResult Function( String nickname,  String roomCode)?  joinLobby,TResult Function( LobbyModel lobby)?  updateLobby,TResult Function()?  syncLobby,TResult Function()?  unknown,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case ServerCreateRoom() when createRoom != null:
-return createRoom(_that.nickname);case ServerJoinRoom() when joinRoom != null:
-return joinRoom(_that.nickname,_that.roomCode);case ServerUpdateLobby() when updateLobby != null:
+case ServerCreateLobby() when createLobby != null:
+return createLobby(_that.nickname);case ServerJoinLobby() when joinLobby != null:
+return joinLobby(_that.nickname,_that.roomCode);case ServerUpdateLobby() when updateLobby != null:
 return updateLobby(_that.lobby);case ServerSyncLobby() when syncLobby != null:
 return syncLobby();case ServerUnknown() when unknown != null:
 return unknown();case _:
@@ -191,11 +191,11 @@ return unknown();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String nickname)  createRoom,required TResult Function( String nickname,  String roomCode)  joinRoom,required TResult Function( LobbyModel lobby)  updateLobby,required TResult Function()  syncLobby,required TResult Function()  unknown,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String nickname)  createLobby,required TResult Function( String nickname,  String roomCode)  joinLobby,required TResult Function( LobbyModel lobby)  updateLobby,required TResult Function()  syncLobby,required TResult Function()  unknown,}) {final _that = this;
 switch (_that) {
-case ServerCreateRoom():
-return createRoom(_that.nickname);case ServerJoinRoom():
-return joinRoom(_that.nickname,_that.roomCode);case ServerUpdateLobby():
+case ServerCreateLobby():
+return createLobby(_that.nickname);case ServerJoinLobby():
+return joinLobby(_that.nickname,_that.roomCode);case ServerUpdateLobby():
 return updateLobby(_that.lobby);case ServerSyncLobby():
 return syncLobby();case ServerUnknown():
 return unknown();}
@@ -212,11 +212,11 @@ return unknown();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String nickname)?  createRoom,TResult? Function( String nickname,  String roomCode)?  joinRoom,TResult? Function( LobbyModel lobby)?  updateLobby,TResult? Function()?  syncLobby,TResult? Function()?  unknown,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String nickname)?  createLobby,TResult? Function( String nickname,  String roomCode)?  joinLobby,TResult? Function( LobbyModel lobby)?  updateLobby,TResult? Function()?  syncLobby,TResult? Function()?  unknown,}) {final _that = this;
 switch (_that) {
-case ServerCreateRoom() when createRoom != null:
-return createRoom(_that.nickname);case ServerJoinRoom() when joinRoom != null:
-return joinRoom(_that.nickname,_that.roomCode);case ServerUpdateLobby() when updateLobby != null:
+case ServerCreateLobby() when createLobby != null:
+return createLobby(_that.nickname);case ServerJoinLobby() when joinLobby != null:
+return joinLobby(_that.nickname,_that.roomCode);case ServerUpdateLobby() when updateLobby != null:
 return updateLobby(_that.lobby);case ServerSyncLobby() when syncLobby != null:
 return syncLobby();case ServerUnknown() when unknown != null:
 return unknown();case _:
@@ -230,9 +230,9 @@ return unknown();case _:
 /// @nodoc
 @JsonSerializable()
 
-class ServerCreateRoom implements ServerAction {
-  const ServerCreateRoom(this.nickname, {final  String? $type}): $type = $type ?? 'createRoom';
-  factory ServerCreateRoom.fromJson(Map<String, dynamic> json) => _$ServerCreateRoomFromJson(json);
+class ServerCreateLobby implements ServerAction {
+  const ServerCreateLobby(this.nickname, {final  String? $type}): $type = $type ?? 'createLobby';
+  factory ServerCreateLobby.fromJson(Map<String, dynamic> json) => _$ServerCreateLobbyFromJson(json);
 
  final  String nickname;
 
@@ -244,16 +244,16 @@ final String $type;
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ServerCreateRoomCopyWith<ServerCreateRoom> get copyWith => _$ServerCreateRoomCopyWithImpl<ServerCreateRoom>(this, _$identity);
+$ServerCreateLobbyCopyWith<ServerCreateLobby> get copyWith => _$ServerCreateLobbyCopyWithImpl<ServerCreateLobby>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ServerCreateRoomToJson(this, );
+  return _$ServerCreateLobbyToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServerCreateRoom&&(identical(other.nickname, nickname) || other.nickname == nickname));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServerCreateLobby&&(identical(other.nickname, nickname) || other.nickname == nickname));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -262,15 +262,15 @@ int get hashCode => Object.hash(runtimeType,nickname);
 
 @override
 String toString() {
-  return 'ServerAction.createRoom(nickname: $nickname)';
+  return 'ServerAction.createLobby(nickname: $nickname)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ServerCreateRoomCopyWith<$Res> implements $ServerActionCopyWith<$Res> {
-  factory $ServerCreateRoomCopyWith(ServerCreateRoom value, $Res Function(ServerCreateRoom) _then) = _$ServerCreateRoomCopyWithImpl;
+abstract mixin class $ServerCreateLobbyCopyWith<$Res> implements $ServerActionCopyWith<$Res> {
+  factory $ServerCreateLobbyCopyWith(ServerCreateLobby value, $Res Function(ServerCreateLobby) _then) = _$ServerCreateLobbyCopyWithImpl;
 @useResult
 $Res call({
  String nickname
@@ -281,17 +281,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$ServerCreateRoomCopyWithImpl<$Res>
-    implements $ServerCreateRoomCopyWith<$Res> {
-  _$ServerCreateRoomCopyWithImpl(this._self, this._then);
+class _$ServerCreateLobbyCopyWithImpl<$Res>
+    implements $ServerCreateLobbyCopyWith<$Res> {
+  _$ServerCreateLobbyCopyWithImpl(this._self, this._then);
 
-  final ServerCreateRoom _self;
-  final $Res Function(ServerCreateRoom) _then;
+  final ServerCreateLobby _self;
+  final $Res Function(ServerCreateLobby) _then;
 
 /// Create a copy of ServerAction
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? nickname = null,}) {
-  return _then(ServerCreateRoom(
+  return _then(ServerCreateLobby(
 null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -303,9 +303,9 @@ as String,
 /// @nodoc
 @JsonSerializable()
 
-class ServerJoinRoom implements ServerAction {
-  const ServerJoinRoom(this.nickname, this.roomCode, {final  String? $type}): $type = $type ?? 'joinRoom';
-  factory ServerJoinRoom.fromJson(Map<String, dynamic> json) => _$ServerJoinRoomFromJson(json);
+class ServerJoinLobby implements ServerAction {
+  const ServerJoinLobby(this.nickname, this.roomCode, {final  String? $type}): $type = $type ?? 'joinLobby';
+  factory ServerJoinLobby.fromJson(Map<String, dynamic> json) => _$ServerJoinLobbyFromJson(json);
 
  final  String nickname;
  final  String roomCode;
@@ -318,16 +318,16 @@ final String $type;
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ServerJoinRoomCopyWith<ServerJoinRoom> get copyWith => _$ServerJoinRoomCopyWithImpl<ServerJoinRoom>(this, _$identity);
+$ServerJoinLobbyCopyWith<ServerJoinLobby> get copyWith => _$ServerJoinLobbyCopyWithImpl<ServerJoinLobby>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ServerJoinRoomToJson(this, );
+  return _$ServerJoinLobbyToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServerJoinRoom&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServerJoinLobby&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -336,15 +336,15 @@ int get hashCode => Object.hash(runtimeType,nickname,roomCode);
 
 @override
 String toString() {
-  return 'ServerAction.joinRoom(nickname: $nickname, roomCode: $roomCode)';
+  return 'ServerAction.joinLobby(nickname: $nickname, roomCode: $roomCode)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ServerJoinRoomCopyWith<$Res> implements $ServerActionCopyWith<$Res> {
-  factory $ServerJoinRoomCopyWith(ServerJoinRoom value, $Res Function(ServerJoinRoom) _then) = _$ServerJoinRoomCopyWithImpl;
+abstract mixin class $ServerJoinLobbyCopyWith<$Res> implements $ServerActionCopyWith<$Res> {
+  factory $ServerJoinLobbyCopyWith(ServerJoinLobby value, $Res Function(ServerJoinLobby) _then) = _$ServerJoinLobbyCopyWithImpl;
 @useResult
 $Res call({
  String nickname, String roomCode
@@ -355,17 +355,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$ServerJoinRoomCopyWithImpl<$Res>
-    implements $ServerJoinRoomCopyWith<$Res> {
-  _$ServerJoinRoomCopyWithImpl(this._self, this._then);
+class _$ServerJoinLobbyCopyWithImpl<$Res>
+    implements $ServerJoinLobbyCopyWith<$Res> {
+  _$ServerJoinLobbyCopyWithImpl(this._self, this._then);
 
-  final ServerJoinRoom _self;
-  final $Res Function(ServerJoinRoom) _then;
+  final ServerJoinLobby _self;
+  final $Res Function(ServerJoinLobby) _then;
 
 /// Create a copy of ServerAction
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? roomCode = null,}) {
-  return _then(ServerJoinRoom(
+  return _then(ServerJoinLobby(
 null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,null == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String,

@@ -14,6 +14,8 @@ abstract interface class ILobbyService {
 
   Future<LobbyModel?> getLobbyById(String id);
 
+  Future<void> setLobbyById(String id, LobbyModel lobby);
+
   Stream<LobbyModel?> streamLobbyById(String id);
 
   Future<void> addPlayerToLobby(String id, PlayerModel player);
@@ -53,12 +55,9 @@ class MockLobbyService implements ILobbyService {
     final lobby = _lobbies[id];
     if (lobby == null) return;
 
-    final newPlayers = List.of(lobby.players)
-      ..add(player);
+    final newPlayers = List.of(lobby.players)..add(player);
 
-    _lobbies[id] = lobby.copyWith(
-      players: newPlayers
-    );
+    _lobbies[id] = lobby.copyWith(players: newPlayers);
     _controller.add(_lobbies);
   }
 
@@ -68,11 +67,15 @@ class MockLobbyService implements ILobbyService {
     if (lobby == null) return;
 
     final newPlayers = List.of(lobby.players)
-        ..removeWhere((player) => player.id == playerId);
+      ..removeWhere((player) => player.id == playerId);
 
-    _lobbies[id] = lobby.copyWith(
-      players: newPlayers
-    );
+    _lobbies[id] = lobby.copyWith(players: newPlayers);
+    _controller.add(_lobbies);
+  }
+
+  @override
+  Future<void> setLobbyById(String id, LobbyModel lobby) async {
+    _lobbies[id] = lobby;
     _controller.add(_lobbies);
   }
 }

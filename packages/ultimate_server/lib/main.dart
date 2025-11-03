@@ -6,6 +6,7 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 import 'package:ultimate_server/handlers.dart';
 import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/utils/id.dart';
 
 Future<void> main() async {
   const port = 8080;
@@ -14,10 +15,10 @@ Future<void> main() async {
   final handler = container.read(serverHandlerProvider);
 
   final wsHandler = webSocketHandler((socket, _) {
-    print("Connected: ${socket.hashCode}");
+    print("Connected: ${socket.id}");
     socket.stream
         .map<ServerAction>(ServerAction.fromDynamic)
-        .listen((action) => handler.handleServerAction(action, socket));
+        .listen((action) => handler.handleServerAction(action, socket: socket));
   });
 
   final wsServer = await shelf_io.serve(
@@ -31,8 +32,9 @@ Future<void> main() async {
       .addMiddleware(logRequests())
       .addHandler(_echoRequest);
 
-  final httpServer = await shelf_io.serve(httpHandler, "localhost", port, shared: true)
-    ..autoCompress = true;
+  final httpServer =
+      await shelf_io.serve(httpHandler, "localhost", port, shared: true)
+        ..autoCompress = true;
 
   print('Serving at http://${httpServer.address.host}:${httpServer.port}');
   print('Serving at ws://${wsServer.address.host}:${wsServer.port}');

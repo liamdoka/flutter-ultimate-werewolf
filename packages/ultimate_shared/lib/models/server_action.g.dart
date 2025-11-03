@@ -6,26 +6,26 @@ part of 'server_action.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ServerCreateRoom _$ServerCreateRoomFromJson(Map<String, dynamic> json) =>
-    ServerCreateRoom(
+ServerCreateLobby _$ServerCreateLobbyFromJson(Map<String, dynamic> json) =>
+    ServerCreateLobby(
       json['nickname'] as String,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$ServerCreateRoomToJson(ServerCreateRoom instance) =>
+Map<String, dynamic> _$ServerCreateLobbyToJson(ServerCreateLobby instance) =>
     <String, dynamic>{
       'nickname': instance.nickname,
       'runtimeType': instance.$type,
     };
 
-ServerJoinRoom _$ServerJoinRoomFromJson(Map<String, dynamic> json) =>
-    ServerJoinRoom(
+ServerJoinLobby _$ServerJoinLobbyFromJson(Map<String, dynamic> json) =>
+    ServerJoinLobby(
       json['nickname'] as String,
       json['roomCode'] as String,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$ServerJoinRoomToJson(ServerJoinRoom instance) =>
+Map<String, dynamic> _$ServerJoinLobbyToJson(ServerJoinLobby instance) =>
     <String, dynamic>{
       'nickname': instance.nickname,
       'roomCode': instance.roomCode,

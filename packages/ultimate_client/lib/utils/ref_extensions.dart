@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ultimate_client/domain/client/client_provider.dart';
 

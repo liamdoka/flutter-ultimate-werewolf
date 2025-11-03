@@ -7,10 +7,10 @@ part 'server_action.g.dart';
 
 @freezed
 sealed class ServerAction with _$ServerAction {
-  const factory ServerAction.createRoom(String nickname) = ServerCreateRoom;
+  const factory ServerAction.createLobby(String nickname) = ServerCreateLobby;
 
-  const factory ServerAction.joinRoom(String nickname, String roomCode) =
-      ServerJoinRoom;
+  const factory ServerAction.joinLobby(String nickname, String roomCode) =
+      ServerJoinLobby;
 
   const factory ServerAction.updateLobby(LobbyModel lobby) = ServerUpdateLobby;
 
@@ -23,10 +23,7 @@ sealed class ServerAction with _$ServerAction {
 
   factory ServerAction.fromDynamic(dynamic message) {
     final json = jsonDecode(message.toString()) as Map<String, dynamic>;
-    final action = ServerAction.fromJson(json);
-
-    print(action);
-    return action;
+    return ServerAction.fromJson(json);
   }
 }
 

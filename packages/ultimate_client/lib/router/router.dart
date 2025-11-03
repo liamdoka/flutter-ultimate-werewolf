@@ -4,17 +4,16 @@ import 'package:ultimate_client/router/router.gr.dart';
 
 part 'router.g.dart';
 
-@riverpod
-AppRouter appRouter(Ref ref) => AppRouter();
+@Riverpod(keepAlive: true)
+Raw<AppRouter> appRouter(Ref ref) => AppRouter();
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   AppRouter();
 
   @override
-  RouteType get defaultRouteType => RouteType.custom(
-    transitionsBuilder: TransitionsBuilders.fadeIn
-  );
+  RouteType get defaultRouteType =>
+      RouteType.custom(transitionsBuilder: TransitionsBuilders.fadeIn);
 
   @override
   List<AutoRoute> get routes => [

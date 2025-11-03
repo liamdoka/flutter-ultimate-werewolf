@@ -1,33 +1,39 @@
 import 'dart:convert';
 
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
 import 'package:ultimate_server/domain/player/player_service.dart';
 import 'package:ultimate_shared/models/server_action.dart';
+import 'package:ultimate_shared/utils/id.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'handlers.g.dart';
 
 @riverpod
-ServerHandler serverHandler(Ref ref) =>
-    ServerHandler(lobbyService: ref.watch(lobbyServiceProvider),
-    playerService: ref.watch(playerServiceProvider)
-    );
+ServerHandler serverHandler(Ref ref) => ServerHandler(
+  lobbyService: ref.watch(lobbyServiceProvider),
+  playerService: ref.watch(playerServiceProvider),
+);
 
 class ServerHandler {
+  final logger = Logger("ServerHandler");
   final ILobbyService lobbyService;
   final IPlayerService playerService;
 
   ServerHandler({required this.lobbyService, required this.playerService});
 
-  void handleServerAction(ServerAction action, WebSocketChannel socket) async {
-    print("Handling: $action");
+  void handleServerAction(
+    ServerAction action, {
+    required WebSocketChannel socket,
+  }) async {
+    logger.log(Level.INFO, "Handling $action");
+
     switch (action) {
-      case ServerCreateRoom(:final nickname):
-        print("Creating lobby...");
+      case ServerCreateLobby(:final nickname):
         final lobby = await lobbyService.createLobby();
         final player = PlayerModel(
-          id: socket.hashCode.toString(),
+          id: socket.id,
           roomCode: lobby.id,
           nickname: nickname,
         );
@@ -35,16 +41,18 @@ class ServerHandler {
         playerService.addPlayer(player);
         lobbyService.addPlayerToLobby(lobby.id, player);
 
-        final json = ServerAction.joinRoom(nickname, lobby.id).toJson();
+        final json = ServerAction.joinLobby(nickname, lobby.id).toJson();
         socket.sink.add(jsonEncode(json));
 
-      case ServerJoinRoom(:final nickname, :final roomCode):
-        print("Tried to add $nickname to $roomCode");
+      case ServerJoinLobby(:final nickname, :final roomCode):
         final lobby = await lobbyService.getLobbyById(roomCode);
-        if (lobby == null) throw ArgumentError();
+        if (lobby == null) {
+          logger.severe("Lobby with ID '$roomCode' not found");
+          return;
+        }
 
         final player = PlayerModel(
-          id: socket.hashCode.toString(),
+          id: socket.id,
           roomCode: lobby.id,
           nickname: nickname,
         );
@@ -52,20 +60,34 @@ class ServerHandler {
         playerService.addPlayer(player);
         lobbyService.addPlayerToLobby(lobby.id, player);
 
-        final json = ServerAction.joinRoom(nickname, lobby.id).toJson();
+        final json = ServerAction.joinLobby(nickname, lobby.id).toJson();
         socket.sink.add(jsonEncode(json));
-      case ServerUpdateLobby():
+
+      case ServerUpdateLobby(:final lobby):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
       case ServerSyncLobby():
-        final player = await playerService.getPlayerById(socket.hashCode.toString());
-        if (player == null) return;
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
 
         final lobby = await lobbyService.getLobbyById(player.roomCode);
-        if (lobby == null) return;
+        if (lobby == null) {
+          logger.severe("Lobby with ID '${player.roomCode}' not found");
+          return;
+        }
 
         final json = ServerAction.updateLobby(lobby).toJson();
         socket.sink.add(jsonEncode(json));
 
       case ServerUnknown():
+        logger.warning("Unknown server action");
     }
   }
 }

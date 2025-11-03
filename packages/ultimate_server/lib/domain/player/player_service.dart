@@ -17,7 +17,6 @@ abstract interface class IPlayerService {
 }
 
 class MockPlayerService implements IPlayerService {
-
   final _players = <String, PlayerModel>{};
 
   @override

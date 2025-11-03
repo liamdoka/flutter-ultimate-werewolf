@@ -59,7 +59,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ref
                       .read(clientProvider.notifier)
                       .sendServerAction(
-                        ServerAction.createRoom(nicknameController.text),
+                        ServerAction.createLobby(nicknameController.text),
                       );
                 },
                 style: FilledButton.styleFrom(
@@ -97,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ref
                           .read(clientProvider.notifier)
                           .sendServerAction(
-                            ServerAction.joinRoom(
+                            ServerAction.joinLobby(
                               nicknameController.text,
                               codeController.text,
                             ),

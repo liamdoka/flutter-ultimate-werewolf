@@ -13,15 +13,15 @@ part of 'router.dart';
 const appRouterProvider = AppRouterProvider._();
 
 final class AppRouterProvider
-    extends $FunctionalProvider<AppRouter, AppRouter, AppRouter>
-    with $Provider<AppRouter> {
+    extends $FunctionalProvider<Raw<AppRouter>, Raw<AppRouter>, Raw<AppRouter>>
+    with $Provider<Raw<AppRouter>> {
   const AppRouterProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'appRouterProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -31,21 +31,21 @@ final class AppRouterProvider
 
   @$internal
   @override
-  $ProviderElement<AppRouter> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<Raw<AppRouter>> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  AppRouter create(Ref ref) {
+  Raw<AppRouter> create(Ref ref) {
     return appRouter(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AppRouter value) {
+  Override overrideWithValue(Raw<AppRouter> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AppRouter>(value),
+      providerOverride: $SyncValueProvider<Raw<AppRouter>>(value),
     );
   }
 }
 
-String _$appRouterHash() => r'f9a95df86bd1005192073b44413b8ecdcf6517fd';
+String _$appRouterHash() => r'9ef2ee218086b41ec585ffa1b0ed6b63ebdbb7d8';
