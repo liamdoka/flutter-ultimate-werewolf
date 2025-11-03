@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:riverpod/riverpod.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -16,9 +14,13 @@ Future<void> main() async {
 
   final wsHandler = webSocketHandler((socket, _) {
     print("Connected: ${socket.id}");
+    handler.socketService.addSocket(socket);
     socket.stream
         .map<ServerAction>(ServerAction.fromDynamic)
-        .listen((action) => handler.handleServerAction(action, socket: socket));
+        .listen(
+          (action) => handler.handleServerAction(action, socket: socket),
+          onDone: () => handler.socketService.removeSocketById(socket.id),
+        );
   });
 
   final wsServer = await shelf_io.serve(

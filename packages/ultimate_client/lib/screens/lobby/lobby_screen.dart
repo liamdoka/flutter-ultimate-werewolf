@@ -52,8 +52,10 @@ class LobbyScreen extends ConsumerWidget {
                   Row(
                     children: [
                       Wrap(
+                        runSpacing: Spacing.sm,
+                        spacing: Spacing.sm,
                         children: lobby.players.map((player) {
-                          if (player.id == client.id) {
+                          if (player.nickname == client.nickname) {
                             return const ClientPlayerTile();
                           }
 
@@ -79,13 +81,12 @@ class PlayerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: context.colors.surfaceContainerHigh,
-        borderRadius: Rounding.sm,
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: context.colors.surfaceContainerHigh,
       ),
-      padding: const EdgeInsets.all(Spacing.sm),
-      child: Text(player.nickname),
+      onPressed: null,
+      child: Text(player.nickname, style: context.fonts.bodyLarge),
     );
   }
 }
@@ -99,15 +100,17 @@ class ClientPlayerTile extends ConsumerWidget {
 
     if (client.isNotInLobby) return const SizedBox.shrink();
 
-    return Container(
-      decoration: BoxDecoration(
-        color: context.colors.surfaceContainerHigh,
-        borderRadius: Rounding.sm,
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: context.colors.surfaceContainerHigh,
       ),
-      padding: const EdgeInsets.all(Spacing.sm),
+      onPressed: () {},
       child: Row(
         spacing: Spacing.xs,
-        children: [const Icon(Icons.person), Text(client.nickname!)],
+        children: [
+          const Icon(Icons.person),
+          Text(client.nickname!, style: context.fonts.bodyLarge),
+        ],
       ),
     );
   }
