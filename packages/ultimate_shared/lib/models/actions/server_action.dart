@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 
@@ -21,9 +19,4 @@ sealed class ServerAction with _$ServerAction {
 
   factory ServerAction.fromJson(Map<String, dynamic> json) =>
       _$ServerActionFromJson(json);
-
-  factory ServerAction.fromDynamic(dynamic message) {
-    final json = jsonDecode(message.toString()) as Map<String, dynamic>;
-    return ServerAction.fromJson(json);
-  }
 }

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LobbyModel {
 
- String get id; String? get admin; LobbyState get state; int get discussionTime; List<PlayerModel> get players;
+ String get id; String? get admin; List<GameCard> get deck; LobbyState get state; int get discussionTime; List<PlayerModel> get players;
 /// Create a copy of LobbyModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LobbyModelCopyWith<LobbyModel> get copyWith => _$LobbyModelCopyWithImpl<LobbyMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LobbyModel&&(identical(other.id, id) || other.id == id)&&(identical(other.admin, admin) || other.admin == admin)&&(identical(other.state, state) || other.state == state)&&(identical(other.discussionTime, discussionTime) || other.discussionTime == discussionTime)&&const DeepCollectionEquality().equals(other.players, players));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LobbyModel&&(identical(other.id, id) || other.id == id)&&(identical(other.admin, admin) || other.admin == admin)&&const DeepCollectionEquality().equals(other.deck, deck)&&(identical(other.state, state) || other.state == state)&&(identical(other.discussionTime, discussionTime) || other.discussionTime == discussionTime)&&const DeepCollectionEquality().equals(other.players, players));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,admin,state,discussionTime,const DeepCollectionEquality().hash(players));
+int get hashCode => Object.hash(runtimeType,id,admin,const DeepCollectionEquality().hash(deck),state,discussionTime,const DeepCollectionEquality().hash(players));
 
 @override
 String toString() {
-  return 'LobbyModel(id: $id, admin: $admin, state: $state, discussionTime: $discussionTime, players: $players)';
+  return 'LobbyModel(id: $id, admin: $admin, deck: $deck, state: $state, discussionTime: $discussionTime, players: $players)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $LobbyModelCopyWith<$Res>  {
   factory $LobbyModelCopyWith(LobbyModel value, $Res Function(LobbyModel) _then) = _$LobbyModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String? admin, LobbyState state, int discussionTime, List<PlayerModel> players
+ String id, String? admin, List<GameCard> deck, LobbyState state, int discussionTime, List<PlayerModel> players
 });
 
 
@@ -65,11 +65,12 @@ class _$LobbyModelCopyWithImpl<$Res>
 
 /// Create a copy of LobbyModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? admin = freezed,Object? state = null,Object? discussionTime = null,Object? players = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? admin = freezed,Object? deck = null,Object? state = null,Object? discussionTime = null,Object? players = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,admin: freezed == admin ? _self.admin : admin // ignore: cast_nullable_to_non_nullable
-as String?,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as String?,deck: null == deck ? _self.deck : deck // ignore: cast_nullable_to_non_nullable
+as List<GameCard>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as LobbyState,discussionTime: null == discussionTime ? _self.discussionTime : discussionTime // ignore: cast_nullable_to_non_nullable
 as int,players: null == players ? _self.players : players // ignore: cast_nullable_to_non_nullable
 as List<PlayerModel>,
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? admin,  LobbyState state,  int discussionTime,  List<PlayerModel> players)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? admin,  List<GameCard> deck,  LobbyState state,  int discussionTime,  List<PlayerModel> players)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LobbyModel() when $default != null:
-return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.players);case _:
+return $default(_that.id,_that.admin,_that.deck,_that.state,_that.discussionTime,_that.players);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.play
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? admin,  LobbyState state,  int discussionTime,  List<PlayerModel> players)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? admin,  List<GameCard> deck,  LobbyState state,  int discussionTime,  List<PlayerModel> players)  $default,) {final _that = this;
 switch (_that) {
 case _LobbyModel():
-return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.players);}
+return $default(_that.id,_that.admin,_that.deck,_that.state,_that.discussionTime,_that.players);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +193,10 @@ return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.play
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? admin,  LobbyState state,  int discussionTime,  List<PlayerModel> players)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? admin,  List<GameCard> deck,  LobbyState state,  int discussionTime,  List<PlayerModel> players)?  $default,) {final _that = this;
 switch (_that) {
 case _LobbyModel() when $default != null:
-return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.players);case _:
+return $default(_that.id,_that.admin,_that.deck,_that.state,_that.discussionTime,_that.players);case _:
   return null;
 
 }
@@ -207,11 +208,18 @@ return $default(_that.id,_that.admin,_that.state,_that.discussionTime,_that.play
 @JsonSerializable()
 
 class _LobbyModel implements LobbyModel {
-  const _LobbyModel({required this.id, this.admin, this.state = LobbyState.waiting, this.discussionTime = 90, final  List<PlayerModel> players = const []}): _players = players;
+  const _LobbyModel({required this.id, this.admin, final  List<GameCard> deck = const [], this.state = LobbyState.waiting, this.discussionTime = 90, final  List<PlayerModel> players = const []}): _deck = deck,_players = players;
   factory _LobbyModel.fromJson(Map<String, dynamic> json) => _$LobbyModelFromJson(json);
 
 @override final  String id;
 @override final  String? admin;
+ final  List<GameCard> _deck;
+@override@JsonKey() List<GameCard> get deck {
+  if (_deck is EqualUnmodifiableListView) return _deck;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_deck);
+}
+
 @override@JsonKey() final  LobbyState state;
 @override@JsonKey() final  int discussionTime;
  final  List<PlayerModel> _players;
@@ -235,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LobbyModel&&(identical(other.id, id) || other.id == id)&&(identical(other.admin, admin) || other.admin == admin)&&(identical(other.state, state) || other.state == state)&&(identical(other.discussionTime, discussionTime) || other.discussionTime == discussionTime)&&const DeepCollectionEquality().equals(other._players, _players));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LobbyModel&&(identical(other.id, id) || other.id == id)&&(identical(other.admin, admin) || other.admin == admin)&&const DeepCollectionEquality().equals(other._deck, _deck)&&(identical(other.state, state) || other.state == state)&&(identical(other.discussionTime, discussionTime) || other.discussionTime == discussionTime)&&const DeepCollectionEquality().equals(other._players, _players));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,admin,state,discussionTime,const DeepCollectionEquality().hash(_players));
+int get hashCode => Object.hash(runtimeType,id,admin,const DeepCollectionEquality().hash(_deck),state,discussionTime,const DeepCollectionEquality().hash(_players));
 
 @override
 String toString() {
-  return 'LobbyModel(id: $id, admin: $admin, state: $state, discussionTime: $discussionTime, players: $players)';
+  return 'LobbyModel(id: $id, admin: $admin, deck: $deck, state: $state, discussionTime: $discussionTime, players: $players)';
 }
 
 
@@ -255,7 +263,7 @@ abstract mixin class _$LobbyModelCopyWith<$Res> implements $LobbyModelCopyWith<$
   factory _$LobbyModelCopyWith(_LobbyModel value, $Res Function(_LobbyModel) _then) = __$LobbyModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? admin, LobbyState state, int discussionTime, List<PlayerModel> players
+ String id, String? admin, List<GameCard> deck, LobbyState state, int discussionTime, List<PlayerModel> players
 });
 
 
@@ -272,11 +280,12 @@ class __$LobbyModelCopyWithImpl<$Res>
 
 /// Create a copy of LobbyModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? admin = freezed,Object? state = null,Object? discussionTime = null,Object? players = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? admin = freezed,Object? deck = null,Object? state = null,Object? discussionTime = null,Object? players = null,}) {
   return _then(_LobbyModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,admin: freezed == admin ? _self.admin : admin // ignore: cast_nullable_to_non_nullable
-as String?,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as String?,deck: null == deck ? _self._deck : deck // ignore: cast_nullable_to_non_nullable
+as List<GameCard>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as LobbyState,discussionTime: null == discussionTime ? _self.discussionTime : discussionTime // ignore: cast_nullable_to_non_nullable
 as int,players: null == players ? _self._players : players // ignore: cast_nullable_to_non_nullable
 as List<PlayerModel>,

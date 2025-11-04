@@ -47,6 +47,14 @@ GameAction _$GameActionFromJson(
           return GameAssumeForm.fromJson(
             json
           );
+                case 'startGame':
+          return GameStartGame.fromJson(
+            json
+          );
+                case 'updateGame':
+          return GameUpdateGame.fromJson(
+            json
+          );
                 case 'none':
           return GameNone.fromJson(
             json
@@ -109,7 +117,7 @@ extension GameActionPatterns on GameAction {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GameSetCard value)?  setCard,TResult Function( GameCheckCard value)?  checkCard,TResult Function( GameEndTurn value)?  endTurn,TResult Function( GameCheckRiver value)?  checkRiver,TResult Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult Function( GameSwapWithRiver value)?  swapWithRiver,TResult Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult Function( GameAssumeForm value)?  assumeForm,TResult Function( GameNone value)?  none,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GameSetCard value)?  setCard,TResult Function( GameCheckCard value)?  checkCard,TResult Function( GameEndTurn value)?  endTurn,TResult Function( GameCheckRiver value)?  checkRiver,TResult Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult Function( GameSwapWithRiver value)?  swapWithRiver,TResult Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult Function( GameAssumeForm value)?  assumeForm,TResult Function( GameStartGame value)?  startGame,TResult Function( GameUpdateGame value)?  updateGame,TResult Function( GameNone value)?  none,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
@@ -120,7 +128,9 @@ return checkRiver(_that);case GameSwapWithPlayer() when swapWithPlayer != null:
 return swapWithPlayer(_that);case GameSwapWithRiver() when swapWithRiver != null:
 return swapWithRiver(_that);case GameSwapOtherPlayers() when swapOtherPlayers != null:
 return swapOtherPlayers(_that);case GameAssumeForm() when assumeForm != null:
-return assumeForm(_that);case GameNone() when none != null:
+return assumeForm(_that);case GameStartGame() when startGame != null:
+return startGame(_that);case GameUpdateGame() when updateGame != null:
+return updateGame(_that);case GameNone() when none != null:
 return none(_that);case _:
   return orElse();
 
@@ -139,7 +149,7 @@ return none(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GameSetCard value)  setCard,required TResult Function( GameCheckCard value)  checkCard,required TResult Function( GameEndTurn value)  endTurn,required TResult Function( GameCheckRiver value)  checkRiver,required TResult Function( GameSwapWithPlayer value)  swapWithPlayer,required TResult Function( GameSwapWithRiver value)  swapWithRiver,required TResult Function( GameSwapOtherPlayers value)  swapOtherPlayers,required TResult Function( GameAssumeForm value)  assumeForm,required TResult Function( GameNone value)  none,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GameSetCard value)  setCard,required TResult Function( GameCheckCard value)  checkCard,required TResult Function( GameEndTurn value)  endTurn,required TResult Function( GameCheckRiver value)  checkRiver,required TResult Function( GameSwapWithPlayer value)  swapWithPlayer,required TResult Function( GameSwapWithRiver value)  swapWithRiver,required TResult Function( GameSwapOtherPlayers value)  swapOtherPlayers,required TResult Function( GameAssumeForm value)  assumeForm,required TResult Function( GameStartGame value)  startGame,required TResult Function( GameUpdateGame value)  updateGame,required TResult Function( GameNone value)  none,}){
 final _that = this;
 switch (_that) {
 case GameSetCard():
@@ -150,7 +160,9 @@ return checkRiver(_that);case GameSwapWithPlayer():
 return swapWithPlayer(_that);case GameSwapWithRiver():
 return swapWithRiver(_that);case GameSwapOtherPlayers():
 return swapOtherPlayers(_that);case GameAssumeForm():
-return assumeForm(_that);case GameNone():
+return assumeForm(_that);case GameStartGame():
+return startGame(_that);case GameUpdateGame():
+return updateGame(_that);case GameNone():
 return none(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -165,7 +177,7 @@ return none(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GameSetCard value)?  setCard,TResult? Function( GameCheckCard value)?  checkCard,TResult? Function( GameEndTurn value)?  endTurn,TResult? Function( GameCheckRiver value)?  checkRiver,TResult? Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult? Function( GameSwapWithRiver value)?  swapWithRiver,TResult? Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult? Function( GameAssumeForm value)?  assumeForm,TResult? Function( GameNone value)?  none,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GameSetCard value)?  setCard,TResult? Function( GameCheckCard value)?  checkCard,TResult? Function( GameEndTurn value)?  endTurn,TResult? Function( GameCheckRiver value)?  checkRiver,TResult? Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult? Function( GameSwapWithRiver value)?  swapWithRiver,TResult? Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult? Function( GameAssumeForm value)?  assumeForm,TResult? Function( GameStartGame value)?  startGame,TResult? Function( GameUpdateGame value)?  updateGame,TResult? Function( GameNone value)?  none,}){
 final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
@@ -176,7 +188,9 @@ return checkRiver(_that);case GameSwapWithPlayer() when swapWithPlayer != null:
 return swapWithPlayer(_that);case GameSwapWithRiver() when swapWithRiver != null:
 return swapWithRiver(_that);case GameSwapOtherPlayers() when swapOtherPlayers != null:
 return swapOtherPlayers(_that);case GameAssumeForm() when assumeForm != null:
-return assumeForm(_that);case GameNone() when none != null:
+return assumeForm(_that);case GameStartGame() when startGame != null:
+return startGame(_that);case GameUpdateGame() when updateGame != null:
+return updateGame(_that);case GameNone() when none != null:
 return none(_that);case _:
   return null;
 
@@ -194,7 +208,7 @@ return none(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( GameCard card)?  setCard,TResult Function( GameCard card)?  checkCard,TResult Function()?  endTurn,TResult Function( Set<int> indices)?  checkRiver,TResult Function( String target)?  swapWithPlayer,TResult Function( int index)?  swapWithRiver,TResult Function( Set<String> players)?  swapOtherPlayers,TResult Function( String target)?  assumeForm,TResult Function()?  none,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( GameCard card)?  setCard,TResult Function( GameCard card)?  checkCard,TResult Function()?  endTurn,TResult Function( Set<int> indices)?  checkRiver,TResult Function( String target)?  swapWithPlayer,TResult Function( int index)?  swapWithRiver,TResult Function( Set<String> players)?  swapOtherPlayers,TResult Function( String target)?  assumeForm,TResult Function()?  startGame,TResult Function( GameModel game)?  updateGame,TResult Function()?  none,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
 return setCard(_that.card);case GameCheckCard() when checkCard != null:
@@ -204,7 +218,9 @@ return checkRiver(_that.indices);case GameSwapWithPlayer() when swapWithPlayer !
 return swapWithPlayer(_that.target);case GameSwapWithRiver() when swapWithRiver != null:
 return swapWithRiver(_that.index);case GameSwapOtherPlayers() when swapOtherPlayers != null:
 return swapOtherPlayers(_that.players);case GameAssumeForm() when assumeForm != null:
-return assumeForm(_that.target);case GameNone() when none != null:
+return assumeForm(_that.target);case GameStartGame() when startGame != null:
+return startGame();case GameUpdateGame() when updateGame != null:
+return updateGame(_that.game);case GameNone() when none != null:
 return none();case _:
   return orElse();
 
@@ -223,7 +239,7 @@ return none();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( GameCard card)  setCard,required TResult Function( GameCard card)  checkCard,required TResult Function()  endTurn,required TResult Function( Set<int> indices)  checkRiver,required TResult Function( String target)  swapWithPlayer,required TResult Function( int index)  swapWithRiver,required TResult Function( Set<String> players)  swapOtherPlayers,required TResult Function( String target)  assumeForm,required TResult Function()  none,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( GameCard card)  setCard,required TResult Function( GameCard card)  checkCard,required TResult Function()  endTurn,required TResult Function( Set<int> indices)  checkRiver,required TResult Function( String target)  swapWithPlayer,required TResult Function( int index)  swapWithRiver,required TResult Function( Set<String> players)  swapOtherPlayers,required TResult Function( String target)  assumeForm,required TResult Function()  startGame,required TResult Function( GameModel game)  updateGame,required TResult Function()  none,}) {final _that = this;
 switch (_that) {
 case GameSetCard():
 return setCard(_that.card);case GameCheckCard():
@@ -233,7 +249,9 @@ return checkRiver(_that.indices);case GameSwapWithPlayer():
 return swapWithPlayer(_that.target);case GameSwapWithRiver():
 return swapWithRiver(_that.index);case GameSwapOtherPlayers():
 return swapOtherPlayers(_that.players);case GameAssumeForm():
-return assumeForm(_that.target);case GameNone():
+return assumeForm(_that.target);case GameStartGame():
+return startGame();case GameUpdateGame():
+return updateGame(_that.game);case GameNone():
 return none();}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -248,7 +266,7 @@ return none();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( GameCard card)?  setCard,TResult? Function( GameCard card)?  checkCard,TResult? Function()?  endTurn,TResult? Function( Set<int> indices)?  checkRiver,TResult? Function( String target)?  swapWithPlayer,TResult? Function( int index)?  swapWithRiver,TResult? Function( Set<String> players)?  swapOtherPlayers,TResult? Function( String target)?  assumeForm,TResult? Function()?  none,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( GameCard card)?  setCard,TResult? Function( GameCard card)?  checkCard,TResult? Function()?  endTurn,TResult? Function( Set<int> indices)?  checkRiver,TResult? Function( String target)?  swapWithPlayer,TResult? Function( int index)?  swapWithRiver,TResult? Function( Set<String> players)?  swapOtherPlayers,TResult? Function( String target)?  assumeForm,TResult? Function()?  startGame,TResult? Function( GameModel game)?  updateGame,TResult? Function()?  none,}) {final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
 return setCard(_that.card);case GameCheckCard() when checkCard != null:
@@ -258,7 +276,9 @@ return checkRiver(_that.indices);case GameSwapWithPlayer() when swapWithPlayer !
 return swapWithPlayer(_that.target);case GameSwapWithRiver() when swapWithRiver != null:
 return swapWithRiver(_that.index);case GameSwapOtherPlayers() when swapOtherPlayers != null:
 return swapOtherPlayers(_that.players);case GameAssumeForm() when assumeForm != null:
-return assumeForm(_that.target);case GameNone() when none != null:
+return assumeForm(_that.target);case GameStartGame() when startGame != null:
+return startGame();case GameUpdateGame() when updateGame != null:
+return updateGame(_that.game);case GameNone() when none != null:
 return none();case _:
   return null;
 
@@ -827,6 +847,127 @@ as String,
 }
 
 
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class GameStartGame implements GameAction {
+  const GameStartGame({final  String? $type}): $type = $type ?? 'startGame';
+  factory GameStartGame.fromJson(Map<String, dynamic> json) => _$GameStartGameFromJson(json);
+
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameStartGameToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameStartGame);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameAction.startGame()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class GameUpdateGame implements GameAction {
+  const GameUpdateGame(this.game, {final  String? $type}): $type = $type ?? 'updateGame';
+  factory GameUpdateGame.fromJson(Map<String, dynamic> json) => _$GameUpdateGameFromJson(json);
+
+ final  GameModel game;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameUpdateGameCopyWith<GameUpdateGame> get copyWith => _$GameUpdateGameCopyWithImpl<GameUpdateGame>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameUpdateGameToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameUpdateGame&&(identical(other.game, game) || other.game == game));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,game);
+
+@override
+String toString() {
+  return 'GameAction.updateGame(game: $game)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GameUpdateGameCopyWith<$Res> implements $GameActionCopyWith<$Res> {
+  factory $GameUpdateGameCopyWith(GameUpdateGame value, $Res Function(GameUpdateGame) _then) = _$GameUpdateGameCopyWithImpl;
+@useResult
+$Res call({
+ GameModel game
+});
+
+
+$GameModelCopyWith<$Res> get game;
+
+}
+/// @nodoc
+class _$GameUpdateGameCopyWithImpl<$Res>
+    implements $GameUpdateGameCopyWith<$Res> {
+  _$GameUpdateGameCopyWithImpl(this._self, this._then);
+
+  final GameUpdateGame _self;
+  final $Res Function(GameUpdateGame) _then;
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? game = null,}) {
+  return _then(GameUpdateGame(
+null == game ? _self.game : game // ignore: cast_nullable_to_non_nullable
+as GameModel,
+  ));
+}
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GameModelCopyWith<$Res> get game {
+  
+  return $GameModelCopyWith<$Res>(_self.game, (value) {
+    return _then(_self.copyWith(game: value));
+  });
+}
 }
 
 /// @nodoc

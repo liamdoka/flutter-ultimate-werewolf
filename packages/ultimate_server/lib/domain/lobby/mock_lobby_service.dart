@@ -54,8 +54,8 @@ class MockLobbyService implements ILobbyService {
   }
 
   @override
-  Future<void> setLobbyById(String id, LobbyModel lobby) async {
-    _lobbies[id] = lobby;
+  Future<void> updateLobby(LobbyModel lobby) async {
+    _lobbies[lobby.id] = lobby;
     _controller.add(_lobbies);
   }
 }

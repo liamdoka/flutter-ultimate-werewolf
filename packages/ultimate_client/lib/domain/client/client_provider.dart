@@ -5,7 +5,7 @@ import 'package:ultimate_client/domain/lobby/lobby_provider.dart';
 import 'package:ultimate_client/domain/models/client_model.dart';
 import 'package:ultimate_client/router/router.dart';
 import 'package:ultimate_client/router/router.gr.dart';
-import 'package:ultimate_shared/models/actions/actions.dart';
+import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -18,8 +18,8 @@ class Client extends _$Client {
   ClientModel build() {
     final socket = WebSocketChannel.connect(Uri.parse("ws://localhost:8080"));
     final subscription = socket.stream
-        .map<ServerAction>(ServerAction.fromDynamic)
-        .listen(handleServerAction);
+        .map<ActionModel>(ActionModel.fromDynamic)
+        .listen(_handleAction);
 
     ref.onDispose(subscription.cancel);
     ref.onDispose(socket.sink.close);
@@ -45,14 +45,26 @@ class Client extends _$Client {
 
     final payload = ActionModel(
       type: ActionType.server,
-      payload: action
+      payload: action.toJson(),
     );
     final json = payload.toJson();
 
     state.socket.sink.add(jsonEncode(json));
   }
 
-  void handleServerAction(ServerAction action) {
+  void _handleAction(ActionModel action) {
+    switch (action.type) {
+      case ActionType.server:
+        final serverAction = ServerAction.fromJson(action.payload);
+        _handleServerAction(serverAction);
+
+      default:
+        print(action);
+        break;
+    }
+  }
+
+  void _handleServerAction(ServerAction action) {
     print("Received: $action");
     final lobbyNotifier = ref.read(lobbyProvider.notifier);
 

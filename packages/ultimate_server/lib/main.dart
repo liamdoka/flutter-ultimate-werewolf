@@ -3,7 +3,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 import 'package:ultimate_server/handlers.dart';
-import 'package:ultimate_shared/models/actions/actions.dart';
+import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/utils/id.dart';
 
 Future<void> main() async {

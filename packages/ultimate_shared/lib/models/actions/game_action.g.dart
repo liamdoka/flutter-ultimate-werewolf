@@ -99,6 +99,21 @@ GameAssumeForm _$GameAssumeFormFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$GameAssumeFormToJson(GameAssumeForm instance) =>
     <String, dynamic>{'target': instance.target, 'runtimeType': instance.$type};
 
+GameStartGame _$GameStartGameFromJson(Map<String, dynamic> json) =>
+    GameStartGame($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$GameStartGameToJson(GameStartGame instance) =>
+    <String, dynamic>{'runtimeType': instance.$type};
+
+GameUpdateGame _$GameUpdateGameFromJson(Map<String, dynamic> json) =>
+    GameUpdateGame(
+      GameModel.fromJson(json['game'] as Map<String, dynamic>),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$GameUpdateGameToJson(GameUpdateGame instance) =>
+    <String, dynamic>{'game': instance.game, 'runtimeType': instance.$type};
+
 GameNone _$GameNoneFromJson(Map<String, dynamic> json) =>
     GameNone($type: json['runtimeType'] as String?);
 

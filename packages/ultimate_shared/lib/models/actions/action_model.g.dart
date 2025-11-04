@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'actions.dart';
+part of 'action_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -8,7 +8,7 @@ part of 'actions.dart';
 
 _ActionModel _$ActionModelFromJson(Map<String, dynamic> json) => _ActionModel(
   type: $enumDecode(_$ActionTypeEnumMap, json['type']),
-  payload: json['payload'],
+  payload: json['payload'] as Map<String, dynamic>? ?? const {},
 );
 
 Map<String, dynamic> _$ActionModelToJson(_ActionModel instance) =>

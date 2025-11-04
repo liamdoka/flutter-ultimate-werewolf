@@ -53,17 +53,17 @@ enum GameCard {
     required this.description,
     required this.action,
   });
-}
 
-const turnOrder = <GameCard>[
-  // DO NOTHING
-  GameCard.soldier,
-  // DO STUFF
-  GameCard.spy,
-  GameCard.bluSpy,
-  GameCard.scout,
-  GameCard.pyro,
-  GameCard.engineer,
-  GameCard.demoman,
-  GameCard.medic,
-];
+  static const turnOrder = <GameCard>[
+    // DO NOTHING
+    GameCard.soldier,
+    // DO STUFF
+    GameCard.spy,
+    GameCard.bluSpy,
+    GameCard.scout,
+    GameCard.pyro,
+    GameCard.engineer,
+    GameCard.demoman,
+    GameCard.medic,
+  ];
+}

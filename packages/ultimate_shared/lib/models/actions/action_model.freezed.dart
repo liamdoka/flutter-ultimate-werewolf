@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'actions.dart';
+part of 'action_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ActionModel {
 
- ActionType get type; dynamic get payload;
+ ActionType get type; Map<String, dynamic> get payload;
 /// Create a copy of ActionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ActionModelCopyWith<$Res>  {
   factory $ActionModelCopyWith(ActionModel value, $Res Function(ActionModel) _then) = _$ActionModelCopyWithImpl;
 @useResult
 $Res call({
- ActionType type, dynamic payload
+ ActionType type, Map<String, dynamic> payload
 });
 
 
@@ -65,11 +65,11 @@ class _$ActionModelCopyWithImpl<$Res>
 
 /// Create a copy of ActionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? payload = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? payload = null,}) {
   return _then(_self.copyWith(
 type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ActionType,payload: freezed == payload ? _self.payload : payload // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as ActionType,payload: null == payload ? _self.payload : payload // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
   ));
 }
 
@@ -151,7 +151,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ActionType type,  dynamic payload)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ActionType type,  Map<String, dynamic> payload)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ActionModel() when $default != null:
 return $default(_that.type,_that.payload);case _:
@@ -172,7 +172,7 @@ return $default(_that.type,_that.payload);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ActionType type,  dynamic payload)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ActionType type,  Map<String, dynamic> payload)  $default,) {final _that = this;
 switch (_that) {
 case _ActionModel():
 return $default(_that.type,_that.payload);}
@@ -189,7 +189,7 @@ return $default(_that.type,_that.payload);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ActionType type,  dynamic payload)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ActionType type,  Map<String, dynamic> payload)?  $default,) {final _that = this;
 switch (_that) {
 case _ActionModel() when $default != null:
 return $default(_that.type,_that.payload);case _:
@@ -204,11 +204,17 @@ return $default(_that.type,_that.payload);case _:
 @JsonSerializable()
 
 class _ActionModel implements ActionModel {
-  const _ActionModel({required this.type, this.payload});
+  const _ActionModel({required this.type, final  Map<String, dynamic> payload = const {}}): _payload = payload;
   factory _ActionModel.fromJson(Map<String, dynamic> json) => _$ActionModelFromJson(json);
 
 @override final  ActionType type;
-@override final  dynamic payload;
+ final  Map<String, dynamic> _payload;
+@override@JsonKey() Map<String, dynamic> get payload {
+  if (_payload is EqualUnmodifiableMapView) return _payload;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_payload);
+}
+
 
 /// Create a copy of ActionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -223,12 +229,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActionModel&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.payload, payload));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActionModel&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._payload, _payload));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(payload));
+int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(_payload));
 
 @override
 String toString() {
@@ -243,7 +249,7 @@ abstract mixin class _$ActionModelCopyWith<$Res> implements $ActionModelCopyWith
   factory _$ActionModelCopyWith(_ActionModel value, $Res Function(_ActionModel) _then) = __$ActionModelCopyWithImpl;
 @override @useResult
 $Res call({
- ActionType type, dynamic payload
+ ActionType type, Map<String, dynamic> payload
 });
 
 
@@ -260,11 +266,11 @@ class __$ActionModelCopyWithImpl<$Res>
 
 /// Create a copy of ActionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? payload = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? payload = null,}) {
   return _then(_ActionModel(
 type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ActionType,payload: freezed == payload ? _self.payload : payload // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as ActionType,payload: null == payload ? _self._payload : payload // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
   ));
 }
 

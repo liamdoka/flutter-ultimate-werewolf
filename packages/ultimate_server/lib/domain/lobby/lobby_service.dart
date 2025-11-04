@@ -15,7 +15,7 @@ abstract interface class ILobbyService {
 
   Future<LobbyModel?> getLobbyById(String id);
 
-  Future<void> setLobbyById(String id, LobbyModel lobby);
+  Future<void> updateLobby(LobbyModel lobby);
 
   Stream<LobbyModel?> streamLobbyById(String id);
 

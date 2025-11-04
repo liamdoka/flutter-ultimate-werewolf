@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ultimate_shared/models/game_card.dart';
+import 'package:ultimate_shared/models/game_model.dart';
 
 part 'game_action.freezed.dart';
 part 'game_action.g.dart';
@@ -25,13 +24,12 @@ sealed class GameAction with _$GameAction {
 
   const factory GameAction.assumeForm(String target) = GameAssumeForm;
 
+  const factory GameAction.startGame() = GameStartGame;
+
+  const factory GameAction.updateGame(GameModel game) = GameUpdateGame;
+
   const factory GameAction.none() = GameNone;
 
   factory GameAction.fromJson(Map<String, dynamic> json) =>
       _$GameActionFromJson(json);
-
-  factory GameAction.fromDynamic(dynamic message) {
-    final json = jsonDecode(message.toString()) as Map<String, dynamic>;
-    return GameAction.fromJson(json);
-  }
 }
