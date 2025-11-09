@@ -28,6 +28,8 @@ sealed class GameAction with _$GameAction {
 
   const factory GameAction.updateGame(GameModel game) = GameUpdateGame;
 
+  const factory GameAction.syncGame() = GameSyncGame;
+
   const factory GameAction.none() = GameNone;
 
   factory GameAction.fromJson(Map<String, dynamic> json) =>

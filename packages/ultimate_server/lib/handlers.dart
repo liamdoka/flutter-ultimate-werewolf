@@ -135,6 +135,21 @@ class ServerHandler {
         _startGame(socket);
       case GameUpdateGame(:final game):
         gameService.updateGame(game);
+      case GameSyncGame():
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
+        final game = await gameService.getGameById(player.roomCode);
+        if (game == null) {
+          logger.severe("Game with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        final json = GameAction.updateGame(game).toJson();
+        socket.sink.add(jsonEncode(json));
     }
   }
 

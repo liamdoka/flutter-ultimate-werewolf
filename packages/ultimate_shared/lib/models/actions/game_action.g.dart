@@ -114,6 +114,12 @@ GameUpdateGame _$GameUpdateGameFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$GameUpdateGameToJson(GameUpdateGame instance) =>
     <String, dynamic>{'game': instance.game, 'runtimeType': instance.$type};
 
+GameSyncGame _$GameSyncGameFromJson(Map<String, dynamic> json) =>
+    GameSyncGame($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$GameSyncGameToJson(GameSyncGame instance) =>
+    <String, dynamic>{'runtimeType': instance.$type};
+
 GameNone _$GameNoneFromJson(Map<String, dynamic> json) =>
     GameNone($type: json['runtimeType'] as String?);
 
