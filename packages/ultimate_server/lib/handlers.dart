@@ -1,13 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_server/domain/game/game_service.dart';
-import 'package:ultimate_server/utils/game_helpers.dart';
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
 import 'package:ultimate_server/domain/player/player_service.dart';
 import 'package:ultimate_server/domain/socket/socket_service.dart';
+import 'package:ultimate_server/domain/subscriptions/subscription_manager.dart';
+import 'package:ultimate_server/utils/game_helpers.dart';
 import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
@@ -26,6 +28,7 @@ ServerHandler serverHandler(Ref ref) => ServerHandler(
   lobbyService: ref.watch(lobbyServiceProvider),
   playerService: ref.watch(playerServiceProvider),
   socketService: ref.watch(socketServiceProvider),
+  subscriptionManager: SubscriptionManager()
 );
 
 class ServerHandler {
@@ -34,12 +37,14 @@ class ServerHandler {
   final ILobbyService lobbyService;
   final IPlayerService playerService;
   final ISocketService socketService;
+  final SubscriptionManager subscriptionManager;
 
   ServerHandler({
     required this.gameService,
     required this.lobbyService,
     required this.playerService,
     required this.socketService,
+    required this.subscriptionManager,
   });
 
   void handleAction(ActionModel action, {required WebSocketChannel socket}) {
@@ -149,10 +154,28 @@ class ServerHandler {
           return;
         }
 
-        final action = ActionModel.game(GameAction.updateGame(game));
-        final json = action.toJson();
+        final json = ActionModel.game(GameAction.updateGame(game)).toJson();
         socket.sink.add(jsonEncode(json));
     }
+  }
+
+  Future<void> handleDisconnect(WebSocketChannel socket) async {
+    await Future.wait([
+      subscriptionManager.clear(socket.id),
+      socketService.removeSocketById(socket.id),
+    ]);
+
+    final player = await playerService.getPlayerById(socket.id);
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    await Future.wait([
+      lobbyService.removePlayerFromLobby(player.roomCode, player.id),
+      playerService.removePlayerById(socket.id),
+    ]);
+    logger.info("Player ${socket.id} disconnected");
   }
 
   Future<void> _startGame(WebSocketChannel socket) async {
@@ -189,16 +212,17 @@ class ServerHandler {
     );
 
     final gameStream = gameService.streamGameById(game.id);
-    gameStream
+    final subscription = gameStream
         .distinct()
         .map((update) {
           if (update == null) return null;
           logger.info("Syncing game ${update.id} to ${socket.id}");
-          final action = ActionModel.game(GameAction.updateGame(update));
-          final json = action.toJson();
+          final json = ActionModel.game(GameAction.updateGame(update)).toJson();
           return jsonEncode(json);
         })
         .listen(socket.sink.add);
+
+    subscriptionManager.add(socket.id, subscription);
   }
 
   /// When a player first logs into a game room.
@@ -217,7 +241,7 @@ class ServerHandler {
     lobbyService.addPlayerToLobby(lobby.id, player);
 
     final lobbyStream = lobbyService.streamLobbyById(lobby.id);
-    lobbyStream
+    final subscription = lobbyStream
         .distinct()
         .map((update) {
           logger.info("Syncing lobby ${update?.id} to ${socket.id}");
@@ -229,10 +253,11 @@ class ServerHandler {
         })
         .listen(socket.sink.add);
 
-    final action = ActionModel.server(
+    subscriptionManager.add(socket.id, subscription);
+
+    final json = ActionModel.server(
       ServerAction.joinLobby(player.nickname, lobby.id),
-    );
-    final json = action.toJson();
+    ).toJson();
     socket.sink.add(jsonEncode(json));
   }
 }
