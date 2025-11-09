@@ -8,6 +8,7 @@ import 'package:ultimate_server/domain/game/game_service.dart';
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
 import 'package:ultimate_server/domain/player/player_service.dart';
 import 'package:ultimate_server/domain/socket/socket_service.dart';
+import 'package:ultimate_server/domain/subscriptions/subscription_manager.dart';
 import 'package:ultimate_server/utils/game_helpers.dart';
 import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
@@ -27,6 +28,7 @@ ServerHandler serverHandler(Ref ref) => ServerHandler(
   lobbyService: ref.watch(lobbyServiceProvider),
   playerService: ref.watch(playerServiceProvider),
   socketService: ref.watch(socketServiceProvider),
+  subscriptionManager: SubscriptionManager()
 );
 
 class ServerHandler {
@@ -35,13 +37,14 @@ class ServerHandler {
   final ILobbyService lobbyService;
   final IPlayerService playerService;
   final ISocketService socketService;
-  final Map<String, List<StreamSubscription<dynamic>>> _subscriptions = {};
+  final SubscriptionManager subscriptionManager;
 
   ServerHandler({
     required this.gameService,
     required this.lobbyService,
     required this.playerService,
     required this.socketService,
+    required this.subscriptionManager,
   });
 
   void handleAction(ActionModel action, {required WebSocketChannel socket}) {
@@ -158,10 +161,7 @@ class ServerHandler {
   }
 
   Future<void> handleDisconnect(WebSocketChannel socket) async {
-    final subscriptions = _subscriptions.remove(socket.id) ?? [];
-    for (final subscription in subscriptions) {
-      await subscription.cancel();
-    }
+    subscriptionManager.clear(socket.id);
     socketService.removeSocketById(socket.id);
 
     final player = await playerService.getPlayerById(socket.id);
@@ -218,7 +218,8 @@ class ServerHandler {
           return jsonEncode(json);
         })
         .listen(socket.sink.add);
-    _subscriptions[socket.id]?.add(subscription);
+
+    subscriptionManager.add(socket.id, subscription);
   }
 
   /// When a player first logs into a game room.
@@ -248,7 +249,8 @@ class ServerHandler {
           return jsonEncode(json);
         })
         .listen(socket.sink.add);
-    _subscriptions[socket.id]?.add(subscription);
+
+    subscriptionManager.add(socket.id, subscription);
 
     final json = ActionModel.server(
       ServerAction.joinLobby(player.nickname, lobby.id),
