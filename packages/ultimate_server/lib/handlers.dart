@@ -91,7 +91,8 @@ class ServerHandler {
           return;
         }
 
-        final json = ServerAction.updateLobby(lobby).toJson();
+        final action = ActionModel.server(ServerAction.updateLobby(lobby));
+        final json = action.toJson();
         socket.sink.add(jsonEncode(json));
 
       case ServerUnknown():
@@ -148,7 +149,8 @@ class ServerHandler {
           return;
         }
 
-        final json = GameAction.updateGame(game).toJson();
+        final action = ActionModel.game(GameAction.updateGame(game));
+        final json = action.toJson();
         socket.sink.add(jsonEncode(json));
     }
   }
@@ -192,7 +194,8 @@ class ServerHandler {
         .map((update) {
           if (update == null) return null;
           logger.info("Syncing game ${update.id} to ${socket.id}");
-          final json = GameAction.updateGame(update).toJson();
+          final action = ActionModel.game(GameAction.updateGame(update));
+          final json = action.toJson();
           return jsonEncode(json);
         })
         .listen(socket.sink.add);
@@ -219,12 +222,17 @@ class ServerHandler {
         .map((update) {
           logger.info("Syncing lobby ${update?.id} to ${socket.id}");
           if (update == null) return null;
-          final json = ServerAction.updateLobby(update).toJson();
+
+          final action = ActionModel.server(ServerAction.updateLobby(update));
+          final json = action.toJson();
           return jsonEncode(json);
         })
         .listen(socket.sink.add);
 
-    final json = ServerAction.joinLobby(player.nickname, lobby.id).toJson();
+    final action = ActionModel.server(
+      ServerAction.joinLobby(player.nickname, lobby.id),
+    );
+    final json = action.toJson();
     socket.sink.add(jsonEncode(json));
   }
 }
