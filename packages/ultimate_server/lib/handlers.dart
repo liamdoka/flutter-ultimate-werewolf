@@ -155,6 +155,20 @@ class ServerHandler {
     }
   }
 
+  void handleDisconnect(WebSocketChannel socket) async {
+    socketService.removeSocketById(socket.id);
+    final player = await playerService.getPlayerById(socket.id);
+    playerService.removePlayerById(socket.id);
+
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    lobbyService.removePlayerFromLobby(player.roomCode, player.id);
+    logger.info("Player ${socket.id} disconnected");
+  }
+
   Future<void> _startGame(WebSocketChannel socket) async {
     final player = await playerService.getPlayerById(socket.id);
     if (player == null) {

@@ -19,7 +19,7 @@ Future<void> main() async {
         .map(ActionModel.fromDynamic)
         .listen(
           (action) => handler.handleAction(action, socket: socket),
-          onDone: () => handler.socketService.removeSocketById(socket.id),
+          onDone: () => handler.handleDisconnect(socket),
         );
   });
 
