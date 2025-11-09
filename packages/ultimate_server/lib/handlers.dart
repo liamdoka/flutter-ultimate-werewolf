@@ -154,15 +154,16 @@ class ServerHandler {
           return;
         }
 
-        final action = ActionModel.game(GameAction.updateGame(game));
-        final json = action.toJson();
+        final json = ActionModel.game(GameAction.updateGame(game)).toJson();
         socket.sink.add(jsonEncode(json));
     }
   }
 
   Future<void> handleDisconnect(WebSocketChannel socket) async {
-    await subscriptionManager.clear(socket.id);
-    socketService.removeSocketById(socket.id);
+    await Future.wait([
+      subscriptionManager.clear(socket.id),
+      socketService.removeSocketById(socket.id),
+    ]);
 
     final player = await playerService.getPlayerById(socket.id);
     if (player == null) {
@@ -170,8 +171,10 @@ class ServerHandler {
       return;
     }
 
-    lobbyService.removePlayerFromLobby(player.roomCode, player.id);
-    playerService.removePlayerById(socket.id);
+    await Future.wait([
+      lobbyService.removePlayerFromLobby(player.roomCode, player.id),
+      playerService.removePlayerById(socket.id),
+    ]);
     logger.info("Player ${socket.id} disconnected");
   }
 
