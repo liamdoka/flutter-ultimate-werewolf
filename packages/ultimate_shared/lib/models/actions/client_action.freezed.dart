@@ -11,11 +11,41 @@ part of 'client_action.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+ClientAction _$ClientActionFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'changeNickname':
+          return ClientChangeNickname.fromJson(
+            json
+          );
+                case 'changeRoomCode':
+          return ClientChangeRoomCode.fromJson(
+            json
+          );
+                case 'joinRoom':
+          return ClientJoinRoom.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'ClientAction',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+      
+}
+
 /// @nodoc
 mixin _$ClientAction {
 
 
 
+  /// Serializes this ClientAction to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -23,7 +53,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientAction);
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => runtimeType.hashCode;
 
@@ -55,11 +85,10 @@ extension ClientActionPatterns on ClientAction {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ClientChangeSocket value)?  changeSocket,TResult Function( ClientChangeNickname value)?  changeNickname,TResult Function( ClientChangeRoomCode value)?  changeRoomCode,TResult Function( ClientJoinRoom value)?  joinRoom,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ClientChangeNickname value)?  changeNickname,TResult Function( ClientChangeRoomCode value)?  changeRoomCode,TResult Function( ClientJoinRoom value)?  joinRoom,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case ClientChangeSocket() when changeSocket != null:
-return changeSocket(_that);case ClientChangeNickname() when changeNickname != null:
+case ClientChangeNickname() when changeNickname != null:
 return changeNickname(_that);case ClientChangeRoomCode() when changeRoomCode != null:
 return changeRoomCode(_that);case ClientJoinRoom() when joinRoom != null:
 return joinRoom(_that);case _:
@@ -80,11 +109,10 @@ return joinRoom(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ClientChangeSocket value)  changeSocket,required TResult Function( ClientChangeNickname value)  changeNickname,required TResult Function( ClientChangeRoomCode value)  changeRoomCode,required TResult Function( ClientJoinRoom value)  joinRoom,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ClientChangeNickname value)  changeNickname,required TResult Function( ClientChangeRoomCode value)  changeRoomCode,required TResult Function( ClientJoinRoom value)  joinRoom,}){
 final _that = this;
 switch (_that) {
-case ClientChangeSocket():
-return changeSocket(_that);case ClientChangeNickname():
+case ClientChangeNickname():
 return changeNickname(_that);case ClientChangeRoomCode():
 return changeRoomCode(_that);case ClientJoinRoom():
 return joinRoom(_that);}
@@ -101,11 +129,10 @@ return joinRoom(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ClientChangeSocket value)?  changeSocket,TResult? Function( ClientChangeNickname value)?  changeNickname,TResult? Function( ClientChangeRoomCode value)?  changeRoomCode,TResult? Function( ClientJoinRoom value)?  joinRoom,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ClientChangeNickname value)?  changeNickname,TResult? Function( ClientChangeRoomCode value)?  changeRoomCode,TResult? Function( ClientJoinRoom value)?  joinRoom,}){
 final _that = this;
 switch (_that) {
-case ClientChangeSocket() when changeSocket != null:
-return changeSocket(_that);case ClientChangeNickname() when changeNickname != null:
+case ClientChangeNickname() when changeNickname != null:
 return changeNickname(_that);case ClientChangeRoomCode() when changeRoomCode != null:
 return changeRoomCode(_that);case ClientJoinRoom() when joinRoom != null:
 return joinRoom(_that);case _:
@@ -125,10 +152,9 @@ return joinRoom(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( WebSocketChannel socket)?  changeSocket,TResult Function( String nickname)?  changeNickname,TResult Function( String roomCode)?  changeRoomCode,TResult Function( String nickname,  String roomCode)?  joinRoom,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String nickname)?  changeNickname,TResult Function( String roomCode)?  changeRoomCode,TResult Function( String nickname,  String roomCode)?  joinRoom,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case ClientChangeSocket() when changeSocket != null:
-return changeSocket(_that.socket);case ClientChangeNickname() when changeNickname != null:
+case ClientChangeNickname() when changeNickname != null:
 return changeNickname(_that.nickname);case ClientChangeRoomCode() when changeRoomCode != null:
 return changeRoomCode(_that.roomCode);case ClientJoinRoom() when joinRoom != null:
 return joinRoom(_that.nickname,_that.roomCode);case _:
@@ -149,10 +175,9 @@ return joinRoom(_that.nickname,_that.roomCode);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( WebSocketChannel socket)  changeSocket,required TResult Function( String nickname)  changeNickname,required TResult Function( String roomCode)  changeRoomCode,required TResult Function( String nickname,  String roomCode)  joinRoom,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String nickname)  changeNickname,required TResult Function( String roomCode)  changeRoomCode,required TResult Function( String nickname,  String roomCode)  joinRoom,}) {final _that = this;
 switch (_that) {
-case ClientChangeSocket():
-return changeSocket(_that.socket);case ClientChangeNickname():
+case ClientChangeNickname():
 return changeNickname(_that.nickname);case ClientChangeRoomCode():
 return changeRoomCode(_that.roomCode);case ClientJoinRoom():
 return joinRoom(_that.nickname,_that.roomCode);}
@@ -169,10 +194,9 @@ return joinRoom(_that.nickname,_that.roomCode);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( WebSocketChannel socket)?  changeSocket,TResult? Function( String nickname)?  changeNickname,TResult? Function( String roomCode)?  changeRoomCode,TResult? Function( String nickname,  String roomCode)?  joinRoom,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String nickname)?  changeNickname,TResult? Function( String roomCode)?  changeRoomCode,TResult? Function( String nickname,  String roomCode)?  joinRoom,}) {final _that = this;
 switch (_that) {
-case ClientChangeSocket() when changeSocket != null:
-return changeSocket(_that.socket);case ClientChangeNickname() when changeNickname != null:
+case ClientChangeNickname() when changeNickname != null:
 return changeNickname(_that.nickname);case ClientChangeRoomCode() when changeRoomCode != null:
 return changeRoomCode(_that.roomCode);case ClientJoinRoom() when joinRoom != null:
 return joinRoom(_that.nickname,_that.roomCode);case _:
@@ -184,79 +208,17 @@ return joinRoom(_that.nickname,_that.roomCode);case _:
 }
 
 /// @nodoc
-
-
-class ClientChangeSocket implements ClientAction {
-  const ClientChangeSocket(this.socket);
-  
-
- final  WebSocketChannel socket;
-
-/// Create a copy of ClientAction
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ClientChangeSocketCopyWith<ClientChangeSocket> get copyWith => _$ClientChangeSocketCopyWithImpl<ClientChangeSocket>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientChangeSocket&&(identical(other.socket, socket) || other.socket == socket));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,socket);
-
-@override
-String toString() {
-  return 'ClientAction.changeSocket(socket: $socket)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $ClientChangeSocketCopyWith<$Res> implements $ClientActionCopyWith<$Res> {
-  factory $ClientChangeSocketCopyWith(ClientChangeSocket value, $Res Function(ClientChangeSocket) _then) = _$ClientChangeSocketCopyWithImpl;
-@useResult
-$Res call({
- WebSocketChannel socket
-});
-
-
-
-
-}
-/// @nodoc
-class _$ClientChangeSocketCopyWithImpl<$Res>
-    implements $ClientChangeSocketCopyWith<$Res> {
-  _$ClientChangeSocketCopyWithImpl(this._self, this._then);
-
-  final ClientChangeSocket _self;
-  final $Res Function(ClientChangeSocket) _then;
-
-/// Create a copy of ClientAction
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? socket = null,}) {
-  return _then(ClientChangeSocket(
-null == socket ? _self.socket : socket // ignore: cast_nullable_to_non_nullable
-as WebSocketChannel,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
+@JsonSerializable()
 
 class ClientChangeNickname implements ClientAction {
-  const ClientChangeNickname(this.nickname);
-  
+  const ClientChangeNickname(this.nickname, {final  String? $type}): $type = $type ?? 'changeNickname';
+  factory ClientChangeNickname.fromJson(Map<String, dynamic> json) => _$ClientChangeNicknameFromJson(json);
 
  final  String nickname;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of ClientAction
 /// with the given fields replaced by the non-null parameter values.
@@ -264,14 +226,17 @@ class ClientChangeNickname implements ClientAction {
 @pragma('vm:prefer-inline')
 $ClientChangeNicknameCopyWith<ClientChangeNickname> get copyWith => _$ClientChangeNicknameCopyWithImpl<ClientChangeNickname>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$ClientChangeNicknameToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientChangeNickname&&(identical(other.nickname, nickname) || other.nickname == nickname));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,nickname);
 
@@ -316,13 +281,17 @@ as String,
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class ClientChangeRoomCode implements ClientAction {
-  const ClientChangeRoomCode(this.roomCode);
-  
+  const ClientChangeRoomCode(this.roomCode, {final  String? $type}): $type = $type ?? 'changeRoomCode';
+  factory ClientChangeRoomCode.fromJson(Map<String, dynamic> json) => _$ClientChangeRoomCodeFromJson(json);
 
  final  String roomCode;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of ClientAction
 /// with the given fields replaced by the non-null parameter values.
@@ -330,14 +299,17 @@ class ClientChangeRoomCode implements ClientAction {
 @pragma('vm:prefer-inline')
 $ClientChangeRoomCodeCopyWith<ClientChangeRoomCode> get copyWith => _$ClientChangeRoomCodeCopyWithImpl<ClientChangeRoomCode>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$ClientChangeRoomCodeToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientChangeRoomCode&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,roomCode);
 
@@ -382,14 +354,18 @@ as String,
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class ClientJoinRoom implements ClientAction {
-  const ClientJoinRoom(this.nickname, this.roomCode);
-  
+  const ClientJoinRoom(this.nickname, this.roomCode, {final  String? $type}): $type = $type ?? 'joinRoom';
+  factory ClientJoinRoom.fromJson(Map<String, dynamic> json) => _$ClientJoinRoomFromJson(json);
 
  final  String nickname;
  final  String roomCode;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of ClientAction
 /// with the given fields replaced by the non-null parameter values.
@@ -397,14 +373,17 @@ class ClientJoinRoom implements ClientAction {
 @pragma('vm:prefer-inline')
 $ClientJoinRoomCopyWith<ClientJoinRoom> get copyWith => _$ClientJoinRoomCopyWithImpl<ClientJoinRoom>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$ClientJoinRoomToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientJoinRoom&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,nickname,roomCode);
 

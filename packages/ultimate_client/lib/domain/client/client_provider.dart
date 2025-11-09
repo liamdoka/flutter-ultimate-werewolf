@@ -31,8 +31,6 @@ class Client extends _$Client {
 
   void send(ClientAction action) {
     switch (action) {
-      case ClientChangeSocket(:final socket):
-        state = state.copyWith(socket: socket);
       case ClientChangeNickname(:final nickname):
         state = state.copyWith(nickname: nickname);
       case ClientChangeRoomCode(:final roomCode):
@@ -43,26 +41,17 @@ class Client extends _$Client {
   }
 
   void sendServerAction(ServerAction action) {
-    print("Sent: $action");
-
-    final payload = ActionModel(
-      type: ActionType.server,
-      payload: action.toJson(),
-    );
-    final json = payload.toJson();
+    final json = ActionModel.server(action).toJson();
     state.socket.sink.add(jsonEncode(json));
   }
 
   void sendGameAction(GameAction action) {
-    print("Sent: $action");
-    final payload = ActionModel(type: ActionType.game,
-      payload: action.toJson()
-    );
-    final json = payload.toJson();
+    final json = ActionModel.game(action).toJson();
     state.socket.sink.add(jsonEncode(json));
   }
 
   void _handleAction(ActionModel action) {
+    print("Received: $action");
     switch (action.type) {
       case ActionType.server:
         final serverAction = ServerAction.fromJson(action.payload);
@@ -100,7 +89,6 @@ class Client extends _$Client {
     final gameNotifier = ref.read(gameProvider.notifier);
 
     switch (action) {
-
       case GameSetCard():
         // TODO: Handle this case.
         throw UnimplementedError();
@@ -130,7 +118,7 @@ class Client extends _$Client {
       case GameSyncGame():
       case GameEndTurn():
       case GameNone():
-        // Do nothing
+      // Do nothing
     }
   }
 }
