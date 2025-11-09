@@ -8,10 +8,10 @@ class SubscriptionManager {
     _subscriptions.putIfAbsent(key, () => []).add(subscription);
   }
 
-  void clear(String key) {
+  Future<void> clear(String key) async {
     final subscriptions = _subscriptions[key] ?? [];
     for (final subscription in subscriptions) {
-      subscription.cancel();
+      await subscription.cancel();
     }
     _subscriptions.remove(key);
   }

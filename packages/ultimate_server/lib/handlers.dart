@@ -161,7 +161,7 @@ class ServerHandler {
   }
 
   Future<void> handleDisconnect(WebSocketChannel socket) async {
-    subscriptionManager.clear(socket.id);
+    await subscriptionManager.clear(socket.id);
     socketService.removeSocketById(socket.id);
 
     final player = await playerService.getPlayerById(socket.id);
