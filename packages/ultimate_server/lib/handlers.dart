@@ -11,6 +11,7 @@ import 'package:ultimate_server/domain/socket/socket_service.dart';
 import 'package:ultimate_server/domain/subscriptions/subscription_manager.dart';
 import 'package:ultimate_server/utils/game_helpers.dart';
 import 'package:ultimate_shared/models/actions/action_model.dart';
+import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
 import 'package:ultimate_shared/models/game_card.dart';
@@ -28,7 +29,7 @@ ServerHandler serverHandler(Ref ref) => ServerHandler(
   lobbyService: ref.watch(lobbyServiceProvider),
   playerService: ref.watch(playerServiceProvider),
   socketService: ref.watch(socketServiceProvider),
-  subscriptionManager: SubscriptionManager()
+  subscriptionManager: SubscriptionManager(),
 );
 
 class ServerHandler {
@@ -96,12 +97,34 @@ class ServerHandler {
           return;
         }
 
-        final action = ActionModel.server(ServerAction.updateLobby(lobby));
-        final json = action.toJson();
+        final json = ActionModel.server(
+          ServerAction.updateLobby(lobby),
+        ).toJson();
         socket.sink.add(jsonEncode(json));
 
       case ServerUnknown():
         logger.warning("Unknown server action");
+
+      case ServerUpdateNickname(:final nickname):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
+        final newPlayer = player.copyWith(nickname: nickname);
+        await Future.wait([
+          playerService.addPlayer(newPlayer),
+          lobbyService.updatePlayer(newPlayer.roomCode, newPlayer),
+        ], eagerError: false);
+
+        final json = ActionModel.client(
+          ClientAction.changeNickname(nickname),
+        ).toJson();
+        socket.sink.add(jsonEncode(json));
+
+      case ServerLeaveLobby():
+        handleDisconnect(socket);
     }
   }
 

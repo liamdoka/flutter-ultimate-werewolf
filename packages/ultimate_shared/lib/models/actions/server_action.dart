@@ -11,6 +11,11 @@ sealed class ServerAction with _$ServerAction {
   const factory ServerAction.joinLobby(String nickname, String roomCode) =
       ServerJoinLobby;
 
+  const factory ServerAction.updateNickname(String nickname) =
+      ServerUpdateNickname;
+
+  const factory ServerAction.leaveLobby(String roomCode) = ServerLeaveLobby;
+
   const factory ServerAction.updateLobby(LobbyModel lobby) = ServerUpdateLobby;
 
   const factory ServerAction.syncLobby() = ServerSyncLobby;

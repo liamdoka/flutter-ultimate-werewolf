@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:ultimate_shared/models/player_model.dart';
@@ -56,6 +55,20 @@ class MockLobbyService implements ILobbyService {
   @override
   Future<void> updateLobby(LobbyModel lobby) async {
     _lobbies[lobby.id] = lobby;
+    _controller.add(_lobbies);
+  }
+
+  @override
+  Future<void> updatePlayer(String id, PlayerModel player) async {
+    final lobby = _lobbies[id];
+    if (lobby == null) return;
+
+    final playerIndex = lobby.players.indexWhere((p) => p.id == player.id);
+    if (playerIndex == -1) return;
+
+    final newPlayers = List.of(lobby.players)..[playerIndex] = player;
+
+    _lobbies[id] = lobby.copyWith(players: newPlayers);
     _controller.add(_lobbies);
   }
 }
