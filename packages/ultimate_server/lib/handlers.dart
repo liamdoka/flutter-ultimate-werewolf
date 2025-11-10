@@ -149,9 +149,13 @@ class ServerHandler {
           (player) => !player.isReady,
         );
         if (lobby.players.isNotEmpty && allPlayersAreReady) {
-          lobbyService.updateLobby(lobby.copyWith(state: LobbyState.starting));
+          await lobbyService.updateLobby(
+            lobby.copyWith(state: LobbyState.starting),
+          );
         } else if (lobby.state != LobbyState.waiting) {
-          lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
+          await lobbyService.updateLobby(
+            lobby.copyWith(state: LobbyState.waiting),
+          );
         }
     }
   }
@@ -242,7 +246,7 @@ class ServerHandler {
       return;
     }
 
-    lobbyService.updateLobby(lobby.copyWith(state: LobbyState.running));
+    await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.running));
 
     final game = GameModel(id: player.roomCode);
     final shuffledPlayers = lobby.players.shuffled();
