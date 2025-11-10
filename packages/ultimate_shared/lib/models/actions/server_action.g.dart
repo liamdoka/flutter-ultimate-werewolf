@@ -32,6 +32,32 @@ Map<String, dynamic> _$ServerJoinLobbyToJson(ServerJoinLobby instance) =>
       'runtimeType': instance.$type,
     };
 
+ServerUpdateNickname _$ServerUpdateNicknameFromJson(
+  Map<String, dynamic> json,
+) => ServerUpdateNickname(
+  json['nickname'] as String,
+  $type: json['runtimeType'] as String?,
+);
+
+Map<String, dynamic> _$ServerUpdateNicknameToJson(
+  ServerUpdateNickname instance,
+) => <String, dynamic>{
+  'nickname': instance.nickname,
+  'runtimeType': instance.$type,
+};
+
+ServerLeaveLobby _$ServerLeaveLobbyFromJson(Map<String, dynamic> json) =>
+    ServerLeaveLobby(
+      json['roomCode'] as String,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$ServerLeaveLobbyToJson(ServerLeaveLobby instance) =>
+    <String, dynamic>{
+      'roomCode': instance.roomCode,
+      'runtimeType': instance.$type,
+    };
+
 ServerUpdateLobby _$ServerUpdateLobbyFromJson(Map<String, dynamic> json) =>
     ServerUpdateLobby(
       LobbyModel.fromJson(json['lobby'] as Map<String, dynamic>),

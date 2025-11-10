@@ -77,9 +77,13 @@ class Client extends _$Client {
         state = state.copyWith(nickname: nickname, roomCode: roomCode);
         ref.read(appRouterProvider).navigate(const LobbyRoute());
 
-      case ServerCreateLobby():
+      case ServerLeaveLobby():
+        ref.read(appRouterProvider).replaceAll([const LoginRoute()]);
+
+        case ServerCreateLobby():
       case ServerSyncLobby():
       case ServerUnknown():
+      case ServerUpdateNickname():
       // Do nothing
     }
   }

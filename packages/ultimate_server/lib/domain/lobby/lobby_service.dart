@@ -21,6 +21,8 @@ abstract interface class ILobbyService {
 
   Future<void> addPlayerToLobby(String id, PlayerModel player);
 
+  Future<void> updatePlayer(String id, PlayerModel player);
+
   Future<void> removePlayerFromLobby(String id, String playerId);
 
   Future<LobbyModel> createLobby();

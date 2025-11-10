@@ -104,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           );
                     },
                     icon: const Icon(Icons.check),
-                  ),
+                  )
                 ],
               ),
             ],
