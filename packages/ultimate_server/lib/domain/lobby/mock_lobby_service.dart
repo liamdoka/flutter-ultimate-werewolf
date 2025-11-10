@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:collection/collection.dart';
 import 'package:ultimate_server/domain/lobby/lobby_service.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:ultimate_shared/models/player_model.dart';
@@ -67,8 +66,7 @@ class MockLobbyService implements ILobbyService {
     final playerIndex = lobby.players.indexWhere((p) => p.id == player.id);
     if (playerIndex == -1) return;
 
-    final newPlayers = List.of(lobby.players)
-      ..[playerIndex] = player;
+    final newPlayers = List.of(lobby.players)..[playerIndex] = player;
 
     _lobbies[id] = lobby.copyWith(players: newPlayers);
     _controller.add(_lobbies);

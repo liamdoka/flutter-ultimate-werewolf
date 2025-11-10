@@ -29,16 +29,7 @@ class Client extends _$Client {
     return ClientModel(socket: socket);
   }
 
-  void send(ClientAction action) {
-    switch (action) {
-      case ClientChangeNickname(:final nickname):
-        state = state.copyWith(nickname: nickname);
-      case ClientChangeRoomCode(:final roomCode):
-        state = state.copyWith(roomCode: roomCode);
-      case ClientJoinRoom(:final nickname, :final roomCode):
-        state = state.copyWith(nickname: nickname, roomCode: roomCode);
-    }
-  }
+  void send(ClientAction action) => _handleClientAction(action);
 
   void sendServerAction(ServerAction action) {
     final json = ActionModel.server(action).toJson();
@@ -51,7 +42,6 @@ class Client extends _$Client {
   }
 
   void _handleAction(ActionModel action) {
-    print("Received: $action");
     switch (action.type) {
       case ActionType.server:
         final serverAction = ServerAction.fromJson(action.payload);
@@ -59,9 +49,9 @@ class Client extends _$Client {
       case ActionType.game:
         final gameAction = GameAction.fromJson(action.payload);
         _handleGameAction(gameAction);
-      default:
-        print(action);
-        break;
+      case ActionType.client:
+        final clientAction = ClientAction.fromJson(action.payload);
+        _handleClientAction(clientAction);
     }
   }
 
@@ -124,6 +114,19 @@ class Client extends _$Client {
       case GameEndTurn():
       case GameNone():
       // Do nothing
+    }
+  }
+
+  void _handleClientAction(ClientAction action) {
+    print("Received: $action");
+
+    switch (action) {
+      case ClientChangeNickname(:final nickname):
+        state = state.copyWith(nickname: nickname);
+      case ClientChangeRoomCode(:final roomCode):
+        state = state.copyWith(roomCode: roomCode);
+      case ClientJoinRoom(:final nickname, :final roomCode):
+        state = state.copyWith(nickname: nickname, roomCode: roomCode);
     }
   }
 }

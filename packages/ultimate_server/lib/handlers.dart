@@ -11,6 +11,7 @@ import 'package:ultimate_server/domain/socket/socket_service.dart';
 import 'package:ultimate_server/domain/subscriptions/subscription_manager.dart';
 import 'package:ultimate_server/utils/game_helpers.dart';
 import 'package:ultimate_shared/models/actions/action_model.dart';
+import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
 import 'package:ultimate_shared/models/game_card.dart';
@@ -114,8 +115,13 @@ class ServerHandler {
         final newPlayer = player.copyWith(nickname: nickname);
         await Future.wait([
           playerService.addPlayer(newPlayer),
-          lobbyService.updatePlayer(newPlayer.roomCode, newPlayer)
+          lobbyService.updatePlayer(newPlayer.roomCode, newPlayer),
         ], eagerError: false);
+
+        final json = ActionModel.client(
+          ClientAction.changeNickname(nickname),
+        ).toJson();
+        socket.sink.add(jsonEncode(json));
 
       case ServerLeaveLobby():
         handleDisconnect(socket);

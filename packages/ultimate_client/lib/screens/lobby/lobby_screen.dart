@@ -110,7 +110,6 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
   late final FocusNode textFocusNode;
   var isEditing = false;
 
-
   @override
   void initState() {
     textFocusNode = FocusNode(
@@ -120,17 +119,16 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
-      }
+      },
     );
 
     textController = TextEditingController(text: widget.client.nickname ?? "");
     textController.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: textController.text.length,
-      );
+      baseOffset: 0,
+      extentOffset: textController.text.length,
+    );
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -148,16 +146,19 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
   }
 
   void cancelEditing() {
+    textController.clear();
     setState(() {
       isEditing = false;
     });
   }
 
   void finishEditing() {
-    ref.client.send(ClientAction.changeNickname(textController.text));
-    ref.client.sendServerAction(
-      ServerAction.updateNickname(textController.text),
-    );
+    final nickname = textController.text.trim();
+    if (nickname.isEmpty) return;
+
+    ref.client.send(ClientAction.changeNickname(nickname));
+    ref.client.sendServerAction(ServerAction.updateNickname(nickname));
+    textController.clear();
     setState(() {
       isEditing = false;
     });
@@ -204,26 +205,30 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
         onPressed: switch (isEditing) {
           true => null,
           false when !menuController.isOpen => menuController.open,
-          false => menuController.close
+          false => menuController.close,
         },
         icon: const Icon(Icons.person),
         label: isEditing
             ? SizedBox(
-              width: BoxSizes.xxs,
-              height: BigSpacing.xxs,
-              child: TextField(
+                width: BoxSizes.xxs,
+                height: BigSpacing.xxs,
+                child: TextField(
                   focusNode: textFocusNode,
                   controller: textController,
                   onEditingComplete: finishEditing,
+                  maxLength: 32,
                   onSubmitted: (_) => finishEditing(),
                   onTapUpOutside: (_) => cancelEditing(),
                   decoration: context.inputDecoration.copyWith(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.xs)
+                    counter: const SizedBox.shrink(),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.xs,
+                    ),
                   ),
                   style: context.fonts.bodyMedium,
                   autofocus: true,
                 ),
-            )
+              )
             : Text(widget.client.nickname!, style: context.fonts.titleMedium),
       ),
     );
