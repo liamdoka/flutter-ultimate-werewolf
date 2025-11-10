@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_server/domain/game/game_service.dart';
@@ -10,12 +9,11 @@ import 'package:ultimate_server/domain/player/player_service.dart';
 import 'package:ultimate_server/domain/socket/socket_service.dart';
 import 'package:ultimate_server/domain/subscriptions/subscription_manager.dart';
 import 'package:ultimate_server/utils/game_helpers.dart';
+import 'package:ultimate_shared/constants/durations.dart';
 import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
-import 'package:ultimate_shared/models/game_card.dart';
-import 'package:ultimate_shared/models/game_model.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:ultimate_shared/models/player_model.dart';
 import 'package:ultimate_shared/utils/id.dart';
@@ -39,6 +37,7 @@ class ServerHandler {
   final IPlayerService playerService;
   final ISocketService socketService;
   final SubscriptionManager subscriptionManager;
+  final Map<String, Timer> _lobbyStartTimers = {};
 
   ServerHandler({
     required this.gameService,
@@ -112,6 +111,19 @@ class ServerHandler {
           return;
         }
 
+        final lobby = await lobbyService.getLobbyById(player.roomCode);
+        if (lobby == null) {
+          logger.severe("Lobby with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        if (lobby.players.any((p) => p.nickname == nickname)) {
+          logger.severe(
+            "Player with nickname '$nickname' already in lobby '${lobby.id}'",
+          );
+          return;
+        }
+
         final newPlayer = player.copyWith(nickname: nickname);
         await Future.wait([
           playerService.addPlayer(newPlayer),
@@ -148,9 +160,21 @@ class ServerHandler {
         final allPlayersAreReady = !lobby.players.any(
           (player) => !player.isReady,
         );
+
+        _lobbyStartTimers[lobby.id]?.cancel();
+        _lobbyStartTimers.remove(lobby.id);
+
         if (lobby.players.isNotEmpty && allPlayersAreReady) {
           await lobbyService.updateLobby(
             lobby.copyWith(state: LobbyState.starting),
+          );
+          _lobbyStartTimers[lobby.id] = Timer(
+            UltimateDurations.lobbyCountdown,
+            () {
+              logger.info("Starting game for lobby ${lobby.id}");
+              _startGame(lobby.id);
+              _lobbyStartTimers.remove(lobby.id);
+            },
           );
         } else if (lobby.state != LobbyState.waiting) {
           await lobbyService.updateLobby(
@@ -193,10 +217,14 @@ class ServerHandler {
         // TODO: Handle this case.
         throw UnimplementedError();
       case GameStartGame():
-        _startGame(socket);
-      case GameUpdateGame(:final game):
-        gameService.updateGame(game);
-      case GameSyncGame():
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+        await _startGame(player.roomCode);
+
+      case GameInitialize():
         final player = await playerService.getPlayerById(socket.id);
         if (player == null) {
           logger.severe("Player with ID '${socket.id}' not found");
@@ -209,77 +237,75 @@ class ServerHandler {
           return;
         }
 
-        final json = ActionModel.game(GameAction.updateGame(game)).toJson();
+        final playerGame = GameHelpers.getInitialPlayerGameModel(
+          game: game,
+          player: player,
+        );
+        final json = ActionModel.game(
+          GameAction.updateGame(playerGame),
+        ).toJson();
         socket.sink.add(jsonEncode(json));
+
+      case GameUpdateGame():
+        logger.warning("GameUpdateGame should not be called on the server");
+
+      case GameUpdateState(:final state):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
+        final game = await gameService.getGameById(player.roomCode);
+        if (game == null) {
+          logger.severe("Game with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        gameService.updateGame(game.copyWith(state: state));
     }
   }
 
   Future<void> handleDisconnect(WebSocketChannel socket) async {
+    final player = await playerService.getPlayerById(socket.id);
+
     await Future.wait([
       subscriptionManager.clear(socket.id),
       socketService.removeSocketById(socket.id),
-    ]);
+    ], eagerError: false);
 
-    final player = await playerService.getPlayerById(socket.id);
     if (player == null) {
       logger.severe("Player with ID '${socket.id}' not found");
       return;
     }
+
+    _lobbyStartTimers[player.roomCode]?.cancel();
+    _lobbyStartTimers.remove(player.roomCode);
 
     await Future.wait([
       lobbyService.removePlayerFromLobby(player.roomCode, player.id),
       playerService.removePlayerById(socket.id),
-    ]);
+    ], eagerError: false);
     logger.info("Player ${socket.id} disconnected");
-  }
-
-  Future<void> _startGame(WebSocketChannel socket) async {
-    final player = await playerService.getPlayerById(socket.id);
-    if (player == null) {
-      logger.severe("Player with ID '${socket.id}' not found");
-      return;
-    }
 
     final lobby = await lobbyService.getLobbyById(player.roomCode);
+    if (lobby != null && lobby.state == LobbyState.starting) {
+      await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
+    }
+  }
+
+  Future<void> _startGame(String lobbyId) async {
+    final lobby = await lobbyService.getLobbyById(lobbyId);
     if (lobby == null) {
-      logger.severe("Lobby with ID '${player.roomCode}' not found");
+      logger.severe("Lobby with ID '$lobbyId' not found");
       return;
     }
 
+    if (lobby.state case LobbyState.running) return;
     await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.running));
 
-    final game = GameModel(id: player.roomCode);
-    final shuffledPlayers = lobby.players.shuffled();
-    final shuffledCards = lobby.deck.sublist(1).shuffled();
-    shuffledCards.insert(0, GameCard.bluSpy);
-
-    for (var i = 0; i < shuffledCards.length; i++) {
-      final card = shuffledCards[i];
-      if (i < shuffledPlayers.length) {
-        final player = shuffledPlayers[i];
-        game.startCards[player.id] = card;
-      } else {
-        game.riverCards.add(card);
-      }
-    }
-
-    final turnOrder = GameHelpers.calculateTurnOrder(game.startCards);
-    gameService.updateGame(
-      game.copyWith(turns: turnOrder, state: GameState.dealing),
-    );
-
-    final gameStream = gameService.streamGameById(game.id);
-    final subscription = gameStream
-        .distinct()
-        .map((update) {
-          if (update == null) return null;
-          logger.info("Syncing game ${update.id} to ${socket.id}");
-          final json = ActionModel.game(GameAction.updateGame(update)).toJson();
-          return jsonEncode(json);
-        })
-        .listen(socket.sink.add);
-
-    subscriptionManager.add(socket.id, subscription);
+    final game = GameHelpers.createGameFromLobby(lobby);
+    gameService.updateGame(game);
   }
 
   /// When a player first logs into a game room.
@@ -288,6 +314,13 @@ class ServerHandler {
     required LobbyModel lobby,
     required String nickname,
   }) async {
+    if (lobby.players.any((p) => p.nickname == nickname)) {
+      logger.severe(
+        "Player with nickname '$nickname' already in lobby '${lobby.id}'",
+      );
+      return;
+    }
+
     final player = PlayerModel(
       id: socket.id,
       roomCode: lobby.id,
@@ -297,20 +330,19 @@ class ServerHandler {
     playerService.addPlayer(player);
     lobbyService.addPlayerToLobby(lobby.id, player);
 
-    final lobbyStream = lobbyService.streamLobbyById(lobby.id);
-    final subscription = lobbyStream
-        .distinct()
-        .map((update) {
-          logger.info("Syncing lobby ${update?.id} to ${socket.id}");
-          if (update == null) return null;
+    final lobbyStream = lobbyService.streamLobbyById(lobby.id).distinct().map((
+      update,
+    ) {
+      logger.info("Syncing lobby ${update?.id} to ${socket.id}");
+      if (update == null) return null;
 
-          final json = ActionModel.server(
-            ServerAction.updateLobby(update),
-          ).toJson();
-          return jsonEncode(json);
-        })
-        .listen(socket.sink.add);
+      final json = ActionModel.server(
+        ServerAction.updateLobby(update),
+      ).toJson();
+      return jsonEncode(json);
+    });
 
+    final subscription = lobbyStream.listen(socket.sink.add);
     subscriptionManager.add(socket.id, subscription);
 
     final json = ActionModel.server(

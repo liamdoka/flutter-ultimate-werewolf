@@ -26,9 +26,14 @@ sealed class GameAction with _$GameAction {
 
   const factory GameAction.startGame() = GameStartGame;
 
-  const factory GameAction.updateGame(GameModel game) = GameUpdateGame;
+  /// Used by the server to grant players their first game state.
+  const factory GameAction.updateGame(PlayerGameModel game) = GameUpdateGame;
 
-  const factory GameAction.syncGame() = GameSyncGame;
+  /// Used by the server to transition the game state for all players.
+  const factory GameAction.updateGameState(GameState state) = GameUpdateState;
+
+  /// Used by players to request the first game state.
+  const factory GameAction.initialize() = GameInitialize;
 
   const factory GameAction.none() = GameNone;
 

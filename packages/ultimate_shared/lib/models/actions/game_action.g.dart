@@ -26,6 +26,7 @@ const _$GameCardEnumMap = {
   GameCard.spy: 'spy',
   GameCard.demoman: 'demoman',
   GameCard.bluSpy: 'bluSpy',
+  GameCard.unknown: 'unknown',
 };
 
 GameCheckCard _$GameCheckCardFromJson(Map<String, dynamic> json) =>
@@ -107,17 +108,37 @@ Map<String, dynamic> _$GameStartGameToJson(GameStartGame instance) =>
 
 GameUpdateGame _$GameUpdateGameFromJson(Map<String, dynamic> json) =>
     GameUpdateGame(
-      GameModel.fromJson(json['game'] as Map<String, dynamic>),
+      PlayerGameModel.fromJson(json['game'] as Map<String, dynamic>),
       $type: json['runtimeType'] as String?,
     );
 
 Map<String, dynamic> _$GameUpdateGameToJson(GameUpdateGame instance) =>
     <String, dynamic>{'game': instance.game, 'runtimeType': instance.$type};
 
-GameSyncGame _$GameSyncGameFromJson(Map<String, dynamic> json) =>
-    GameSyncGame($type: json['runtimeType'] as String?);
+GameUpdateState _$GameUpdateStateFromJson(Map<String, dynamic> json) =>
+    GameUpdateState(
+      $enumDecode(_$GameStateEnumMap, json['state']),
+      $type: json['runtimeType'] as String?,
+    );
 
-Map<String, dynamic> _$GameSyncGameToJson(GameSyncGame instance) =>
+Map<String, dynamic> _$GameUpdateStateToJson(GameUpdateState instance) =>
+    <String, dynamic>{
+      'state': _$GameStateEnumMap[instance.state]!,
+      'runtimeType': instance.$type,
+    };
+
+const _$GameStateEnumMap = {
+  GameState.dealing: 'dealing',
+  GameState.playing: 'playing',
+  GameState.discussing: 'discussing',
+  GameState.voting: 'voting',
+  GameState.ended: 'ended',
+};
+
+GameInitialize _$GameInitializeFromJson(Map<String, dynamic> json) =>
+    GameInitialize($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$GameInitializeToJson(GameInitialize instance) =>
     <String, dynamic>{'runtimeType': instance.$type};
 
 GameNone _$GameNoneFromJson(Map<String, dynamic> json) =>

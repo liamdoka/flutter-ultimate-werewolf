@@ -20,3 +20,18 @@ sealed class GameModel with _$GameModel {
   factory GameModel.fromJson(Map<String, dynamic> json) =>
       _$GameModelFromJson(json);
 }
+
+@freezed
+sealed class PlayerGameModel with _$PlayerGameModel {
+  const factory PlayerGameModel({
+    required String gameId,
+    required String playerId,
+    @Default({}) Map<String, GameCard> playerCards,
+    @Default([]) List<GameCard> riverCards,
+    @Default(GameState.dealing) GameState state,
+    @Default(false) bool isPlayerTurn,
+  }) = _PlayerGameModel;
+
+  factory PlayerGameModel.fromJson(Map<String, dynamic> json) =>
+      _$PlayerGameModelFromJson(json);
+}

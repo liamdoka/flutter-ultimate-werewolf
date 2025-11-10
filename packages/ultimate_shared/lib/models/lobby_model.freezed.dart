@@ -208,7 +208,7 @@ return $default(_that.id,_that.admin,_that.deck,_that.state,_that.discussionTime
 @JsonSerializable()
 
 class _LobbyModel implements LobbyModel {
-  const _LobbyModel({required this.id, this.admin, final  List<GameCard> deck = const [], this.state = LobbyState.waiting, this.discussionTime = 90, final  List<PlayerModel> players = const []}): _deck = deck,_players = players;
+  const _LobbyModel({required this.id, this.admin, final  List<GameCard> deck = const [GameCard.bluSpy, GameCard.soldier, GameCard.soldier], this.state = LobbyState.waiting, this.discussionTime = 90, final  List<PlayerModel> players = const []}): _deck = deck,_players = players;
   factory _LobbyModel.fromJson(Map<String, dynamic> json) => _$LobbyModelFromJson(json);
 
 @override final  String id;

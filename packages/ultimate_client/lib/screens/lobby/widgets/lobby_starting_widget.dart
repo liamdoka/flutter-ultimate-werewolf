@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ultimate_client/utils/theme_extensions.dart';
+import 'package:ultimate_shared/constants/durations.dart';
 
 class LobbyStartingWidget extends StatefulWidget {
   const LobbyStartingWidget({super.key});
@@ -10,10 +11,9 @@ class LobbyStartingWidget extends StatefulWidget {
 
 class _LobbyStartingWidgetState extends State<LobbyStartingWidget>
     with SingleTickerProviderStateMixin {
-  // TODO: do something when this hits zero.
-  static const countdownTime = Duration(seconds: 3);
-
   late final AnimationController _controller;
+
+  final countdownTime = UltimateDurations.lobbyCountdown;
 
   @override
   void initState() {
