@@ -21,6 +21,7 @@ dependencies:
   riverpod_annotation: ^3.0.3
   ultimate_shared:
     path: ../ultimate_shared
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:

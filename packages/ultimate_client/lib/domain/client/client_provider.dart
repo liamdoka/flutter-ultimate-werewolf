@@ -57,11 +57,10 @@ class Client extends _$Client {
 
   void _handleServerAction(ServerAction action) {
     print("Received: $action");
-    final lobbyNotifier = ref.read(lobbyProvider.notifier);
 
     switch (action) {
       case ServerUpdateLobby(:final lobby):
-        lobbyNotifier.setLobby(lobby);
+        ref.read(lobbyProvider.notifier).setLobby(lobby);
 
       case ServerJoinLobby(:final nickname, :final roomCode):
         state = state.copyWith(nickname: nickname, roomCode: roomCode);
@@ -75,6 +74,7 @@ class Client extends _$Client {
       case ServerSyncLobby():
       case ServerUnknown():
       case ServerUpdateNickname():
+      case ServerSetReady():
       // Do nothing
     }
   }
