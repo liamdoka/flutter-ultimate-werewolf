@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'client_provider.dart';
+part of 'player_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'client_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(Client)
-const clientProvider = ClientProvider._();
+@ProviderFor(Player)
+const playerProvider = PlayerProvider._();
 
-final class ClientProvider extends $NotifierProvider<Client, ClientModel> {
-  const ClientProvider._()
+final class PlayerProvider extends $NotifierProvider<Player, PlayerModel> {
+  const PlayerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'clientProvider',
-        isAutoDispose: false,
+        name: r'playerProvider',
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$clientHash();
+  String debugGetCreateSourceHash() => _$playerHash();
 
   @$internal
   @override
-  Client create() => Client();
+  Player create() => Player();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ClientModel value) {
+  Override overrideWithValue(PlayerModel value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ClientModel>(value),
+      providerOverride: $SyncValueProvider<PlayerModel>(value),
     );
   }
 }
 
-String _$clientHash() => r'809766d25fe0fbb4289a267487e55e24053ebd2d';
+String _$playerHash() => r'eec50e982bfebb95a11b171434787ebc70a34656';
 
-abstract class _$Client extends $Notifier<ClientModel> {
-  ClientModel build();
+abstract class _$Player extends $Notifier<PlayerModel> {
+  PlayerModel build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<ClientModel, ClientModel>;
+    final ref = this.ref as $Ref<PlayerModel, PlayerModel>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<ClientModel, ClientModel>,
-              ClientModel,
+              AnyNotifier<PlayerModel, PlayerModel>,
+              PlayerModel,
               Object?,
               Object?
             >;

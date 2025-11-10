@@ -124,7 +124,35 @@ class ServerHandler {
         socket.sink.add(jsonEncode(json));
 
       case ServerLeaveLobby():
-        handleDisconnect(socket);
+        await handleDisconnect(socket);
+
+      case ServerSetReady(:final isReady):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+        final newPlayer = player.copyWith(isReady: isReady);
+
+        await Future.wait([
+          lobbyService.updatePlayer(player.roomCode, newPlayer),
+          playerService.addPlayer(newPlayer),
+        ], eagerError: false);
+
+        final lobby = await lobbyService.getLobbyById(player.roomCode);
+        if (lobby == null) {
+          logger.severe("Lobby with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        final allPlayersAreReady = !lobby.players.any(
+          (player) => !player.isReady,
+        );
+        if (lobby.players.isNotEmpty && allPlayersAreReady) {
+          lobbyService.updateLobby(lobby.copyWith(state: LobbyState.starting));
+        } else if (lobby.state != LobbyState.waiting) {
+          lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
+        }
     }
   }
 
@@ -214,6 +242,8 @@ class ServerHandler {
       return;
     }
 
+    lobbyService.updateLobby(lobby.copyWith(state: LobbyState.running));
+
     final game = GameModel(id: player.roomCode);
     final shuffledPlayers = lobby.players.shuffled();
     final shuffledCards = lobby.deck.sublist(1).shuffled();
@@ -270,8 +300,9 @@ class ServerHandler {
           logger.info("Syncing lobby ${update?.id} to ${socket.id}");
           if (update == null) return null;
 
-          final action = ActionModel.server(ServerAction.updateLobby(update));
-          final json = action.toJson();
+          final json = ActionModel.server(
+            ServerAction.updateLobby(update),
+          ).toJson();
           return jsonEncode(json);
         })
         .listen(socket.sink.add);

@@ -46,6 +46,18 @@ Map<String, dynamic> _$ServerUpdateNicknameToJson(
   'runtimeType': instance.$type,
 };
 
+ServerSetReady _$ServerSetReadyFromJson(Map<String, dynamic> json) =>
+    ServerSetReady(
+      json['isReady'] as bool,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$ServerSetReadyToJson(ServerSetReady instance) =>
+    <String, dynamic>{
+      'isReady': instance.isReady,
+      'runtimeType': instance.$type,
+    };
+
 ServerLeaveLobby _$ServerLeaveLobbyFromJson(Map<String, dynamic> json) =>
     ServerLeaveLobby(
       json['roomCode'] as String,
