@@ -169,7 +169,6 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
     return MenuAnchor(
       controller: menuController,
       menuChildren: [
-        // TODO: Make this create an inline TextField.
         ListTile(
           leading: const Icon(Icons.edit),
           title: Text("Edit nickname", style: context.fonts.titleMedium),

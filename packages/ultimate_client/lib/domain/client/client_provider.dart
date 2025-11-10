@@ -79,8 +79,9 @@ class Client extends _$Client {
 
       case ServerLeaveLobby():
         ref.read(appRouterProvider).replaceAll([const LoginRoute()]);
+        ref.invalidateSelf();
 
-        case ServerCreateLobby():
+      case ServerCreateLobby():
       case ServerSyncLobby():
       case ServerUnknown():
       case ServerUpdateNickname():
