@@ -136,6 +136,7 @@ class _ClientPlayerTileState extends ConsumerState<ClientPlayerTile> {
   void dispose() {
     menuController.close();
     textController.dispose();
+    textFocusNode.dispose();
     super.dispose();
   }
 
