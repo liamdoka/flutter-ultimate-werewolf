@@ -36,7 +36,7 @@ abstract class GameHelpers {
   /// Create a game and shuffle the cards.
   static GameModel createGameFromLobby(LobbyModel lobby) {
     final minCards = lobby.players.length + UltimateNumbers.riverCards;
-    if (minCards < lobby.deck.length) throw ArgumentError("Not enough cards");
+    if (lobby.deck.length < minCards) throw ArgumentError("Not enough cards");
 
     final shuffledPlayers = lobby.players.shuffled();
     final shuffledCards = lobby.deck.sublist(1).shuffled()
