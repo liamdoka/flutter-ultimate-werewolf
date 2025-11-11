@@ -305,7 +305,7 @@ class ServerHandler {
     await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.running));
 
     final game = GameHelpers.createGameFromLobby(lobby);
-    gameService.updateGame(game);
+    await gameService.updateGame(game);
   }
 
   /// When a player first logs into a game room.
@@ -327,8 +327,8 @@ class ServerHandler {
       nickname: nickname,
     );
 
-    playerService.addPlayer(player);
-    lobbyService.addPlayerToLobby(lobby.id, player);
+    await playerService.addPlayer(player);
+    await lobbyService.addPlayerToLobby(lobby.id, player);
 
     final lobbyStream = lobbyService.streamLobbyById(lobby.id).distinct().map((
       update,
