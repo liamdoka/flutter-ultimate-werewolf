@@ -12,7 +12,7 @@ part of 'game_provider.dart';
 @ProviderFor(Game)
 const gameProvider = GameProvider._();
 
-final class GameProvider extends $NotifierProvider<Game, GameModel?> {
+final class GameProvider extends $NotifierProvider<Game, PlayerGameModel> {
   const GameProvider._()
     : super(
         from: null,
@@ -32,28 +32,28 @@ final class GameProvider extends $NotifierProvider<Game, GameModel?> {
   Game create() => Game();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GameModel? value) {
+  Override overrideWithValue(PlayerGameModel value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<GameModel?>(value),
+      providerOverride: $SyncValueProvider<PlayerGameModel>(value),
     );
   }
 }
 
-String _$gameHash() => r'faee7b991d06d993c6a620d26f5c409836b42f64';
+String _$gameHash() => r'c9c2b28860258d2b3c48766eb3643cda60d88eff';
 
-abstract class _$Game extends $Notifier<GameModel?> {
-  GameModel? build();
+abstract class _$Game extends $Notifier<PlayerGameModel> {
+  PlayerGameModel build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<GameModel?, GameModel?>;
+    final ref = this.ref as $Ref<PlayerGameModel, PlayerGameModel>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<GameModel?, GameModel?>,
-              GameModel?,
+              AnyNotifier<PlayerGameModel, PlayerGameModel>,
+              PlayerGameModel,
               Object?,
               Object?
             >;

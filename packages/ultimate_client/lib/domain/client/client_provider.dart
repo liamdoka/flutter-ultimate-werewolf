@@ -10,6 +10,7 @@ import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
+import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'client_provider.g.dart';
@@ -61,6 +62,9 @@ class Client extends _$Client {
     switch (action) {
       case ServerUpdateLobby(:final lobby):
         ref.read(lobbyProvider.notifier).setLobby(lobby);
+        if (lobby.state == LobbyState.running) {
+          ref.read(appRouterProvider).navigate(const GameRoute());
+        }
 
       case ServerJoinLobby(:final nickname, :final roomCode):
         state = state.copyWith(nickname: nickname, roomCode: roomCode);
@@ -110,7 +114,12 @@ class Client extends _$Client {
         throw UnimplementedError();
       case GameUpdateGame(:final game):
         gameNotifier.setGame(game);
-      case GameSyncGame():
+
+      // `state` is a name that's taken so we're renaming it `gameState`
+      case GameUpdateState(state: final gameState):
+        gameNotifier.setState(gameState);
+
+      case GameInitialize():
       case GameEndTurn():
       case GameNone():
       // Do nothing

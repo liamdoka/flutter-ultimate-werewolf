@@ -40,7 +40,8 @@ enum GameCard {
     name: "Blu Spy",
     description: "If there is only one Blu Spy, look at card from the middle",
     action: GameCheckRiver,
-  );
+  ),
+  unknown(name: "Unknown", description: "You don't know", action: GameNone);
 
   // TODO: Sniper, Heavy
 

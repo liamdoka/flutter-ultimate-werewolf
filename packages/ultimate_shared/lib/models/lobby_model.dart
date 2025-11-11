@@ -10,7 +10,14 @@ sealed class LobbyModel with _$LobbyModel {
   const factory LobbyModel({
     required String id,
     String? admin,
-    @Default([]) List<GameCard> deck,
+    @Default([
+      GameCard.bluSpy,
+      GameCard.soldier,
+      GameCard.soldier,
+      GameCard.soldier,
+      GameCard.soldier,
+    ])
+    List<GameCard> deck,
     @Default(LobbyState.waiting) LobbyState state,
     @Default(90) int discussionTime,
     @Default([]) List<PlayerModel> players,
