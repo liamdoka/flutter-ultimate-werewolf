@@ -40,7 +40,7 @@ final class ClientProvider extends $NotifierProvider<Client, ClientModel> {
   }
 }
 
-String _$clientHash() => r'8a66c9ebe741176d6828d79890908f70be10cad9';
+String _$clientHash() => r'2cf33bdce74afb4f52de035a2da7d42011d1f2ae';
 
 abstract class _$Client extends $Notifier<ClientModel> {
   ClientModel build();

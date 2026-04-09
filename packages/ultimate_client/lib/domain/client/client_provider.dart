@@ -17,17 +17,57 @@ part 'client_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class Client extends _$Client {
+  static const _defaultUrl = 'ws://localhost:8080';
+  static const _maxRetries = 5;
+  static const _retryDelay = Duration(seconds: 2);
+
+  int _retryCount = 0;
+
   @override
   ClientModel build() {
-    final socket = WebSocketChannel.connect(Uri.parse("ws://localhost:8080"));
+    final socket = WebSocketChannel.connect(Uri.parse(_defaultUrl));
     final subscription = socket.stream
         .map<ActionModel>(ActionModel.fromDynamic)
-        .listen(_handleAction);
+        .listen(
+          _handleAction,
+          onError: _handleError,
+          onDone: _handleDisconnect,
+        );
 
     ref.onDispose(subscription.cancel);
     ref.onDispose(socket.sink.close);
 
-    return ClientModel(socket: socket);
+    return ClientModel(
+      socket: socket,
+      connectionState: ConnectionState.connected,
+    );
+  }
+
+  void _handleError(Object error) {
+    print("WebSocket error: $error");
+    state = state.copyWith(connectionState: ConnectionState.disconnected);
+    _attemptReconnect();
+  }
+
+  void _handleDisconnect() {
+    print("WebSocket disconnected");
+    state = state.copyWith(connectionState: ConnectionState.disconnected);
+    _attemptReconnect();
+  }
+
+  Future<void> _attemptReconnect() async {
+    if (_retryCount >= _maxRetries) {
+      print("Max reconnection attempts reached");
+      return;
+    }
+
+    _retryCount++;
+    state = state.copyWith(connectionState: ConnectionState.reconnecting);
+    print("Attempting to reconnect ($_retryCount/$_maxRetries)...");
+
+    final delay = _retryDelay * _retryCount;
+    await Future<void>.delayed(delay);
+    ref.invalidateSelf();
   }
 
   void send(ClientAction action) => _handleClientAction(action);

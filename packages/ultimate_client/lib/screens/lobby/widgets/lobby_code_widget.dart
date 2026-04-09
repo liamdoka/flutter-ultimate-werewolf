@@ -16,7 +16,6 @@ class _LobbyCodeWidgetState extends State<LobbyCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final font = context.fonts.titleMedium?.copyWith(fontFamily: 'monospace');
     final font = GoogleFonts.jetBrainsMono();
 
     return Container(
