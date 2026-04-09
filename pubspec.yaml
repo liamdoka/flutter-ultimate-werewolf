@@ -2,7 +2,7 @@ name: _
 publish_to: 'none'
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.11.2
 
 workspace:
   - packages/ultimate_shared

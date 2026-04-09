@@ -40,7 +40,7 @@ final class GameProvider extends $NotifierProvider<Game, PlayerGameModel> {
   }
 }
 
-String _$gameHash() => r'c9c2b28860258d2b3c48766eb3643cda60d88eff';
+String _$gameHash() => r'2c29bacf2cf3309a25ba3eb88bf955af1a9e81f9';
 
 abstract class _$Game extends $Notifier<PlayerGameModel> {
   PlayerGameModel build();

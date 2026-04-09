@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_server/domain/game/game_service.dart';
@@ -14,6 +15,7 @@ import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
+import 'package:ultimate_shared/models/game_card.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:ultimate_shared/models/player_model.dart';
 import 'package:ultimate_shared/utils/id.dart';
@@ -27,11 +29,11 @@ ServerHandler serverHandler(Ref ref) => ServerHandler(
   lobbyService: ref.watch(lobbyServiceProvider),
   playerService: ref.watch(playerServiceProvider),
   socketService: ref.watch(socketServiceProvider),
-  subscriptionManager: SubscriptionManager(),
+  subscriptionManager: ref.watch(subscriptionManagerProvider),
 );
 
 class ServerHandler {
-  final logger = Logger("ServerHandler")..onRecord.listen(print);
+  final logger = Logger("ServerHandler");
   final IGameService gameService;
   final ILobbyService lobbyService;
   final IPlayerService playerService;
@@ -57,7 +59,6 @@ class ServerHandler {
         _handleGameAction(gameAction, socket: socket);
       default:
         print(action);
-        break;
     }
   }
 
@@ -69,16 +70,44 @@ class ServerHandler {
 
     switch (action) {
       case ServerCreateLobby(:final nickname):
-        final lobby = await lobbyService.createLobby();
-        _addPlayerToLobby(socket: socket, lobby: lobby, nickname: nickname);
-
-      case ServerJoinLobby(:final nickname, :final roomCode):
-        final lobby = await lobbyService.getLobbyById(roomCode);
-        if (lobby == null) {
-          logger.severe("Lobby with ID '$roomCode' not found");
+        final validatedNickname = _validateNickname(nickname);
+        if (validatedNickname == null) {
+          logger.warning("Invalid nickname: $nickname");
           return;
         }
-        _addPlayerToLobby(socket: socket, lobby: lobby, nickname: nickname);
+        final lobby = await lobbyService.createLobby();
+        _addPlayerToLobby(
+          socket: socket,
+          lobby: lobby,
+          nickname: validatedNickname,
+        );
+
+      case ServerJoinLobby(:final nickname, :final roomCode):
+        final validatedNickname = _validateNickname(nickname);
+        if (validatedNickname == null) {
+          logger.warning("Invalid nickname: $nickname");
+          return;
+        }
+        final validatedRoomCode = _validateRoomCode(roomCode);
+        if (validatedRoomCode == null) {
+          logger.warning("Invalid room code: $roomCode");
+          return;
+        }
+        final lobby = await lobbyService.getLobbyById(validatedRoomCode);
+        if (lobby == null) {
+          logger.severe("Lobby with ID '$validatedRoomCode' not found");
+          return;
+        }
+        if (lobby.state != LobbyState.waiting &&
+            lobby.state != LobbyState.starting) {
+          logger.warning("Cannot join lobby in state: ${lobby.state}");
+          return;
+        }
+        _addPlayerToLobby(
+          socket: socket,
+          lobby: lobby,
+          nickname: validatedNickname,
+        );
 
       case ServerUpdateLobby(:final lobby):
         await lobbyService.updateLobby(lobby);
@@ -125,10 +154,8 @@ class ServerHandler {
         }
 
         final newPlayer = player.copyWith(nickname: nickname);
-        await Future.wait([
-          playerService.addPlayer(newPlayer),
-          lobbyService.updatePlayer(newPlayer.roomCode, newPlayer),
-        ], eagerError: false);
+        await playerService.addPlayer(newPlayer);
+        await lobbyService.updatePlayer(newPlayer.roomCode, newPlayer);
 
         final json = ActionModel.client(
           ClientAction.changeNickname(nickname),
@@ -146,10 +173,8 @@ class ServerHandler {
         }
         final newPlayer = player.copyWith(isReady: isReady);
 
-        await Future.wait([
-          lobbyService.updatePlayer(player.roomCode, newPlayer),
-          playerService.addPlayer(newPlayer),
-        ], eagerError: false);
+        await lobbyService.updatePlayer(player.roomCode, newPlayer);
+        await playerService.addPlayer(newPlayer);
 
         final lobby = await lobbyService.getLobbyById(player.roomCode);
         if (lobby == null) {
@@ -190,32 +215,59 @@ class ServerHandler {
   }) async {
     switch (action) {
       case GameSetCard():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameSetCard not yet implemented");
+        return;
       case GameCheckCard():
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case GameEndTurn():
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case GameCheckRiver():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameCheckCard not yet implemented");
+        return;
+      case GameCheckRiver(:final indices):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
+        final game = await gameService.getGameById(player.roomCode);
+        if (game == null) {
+          logger.severe("Game with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        final seenRiverCards = game.riverCards
+            .mapIndexed(
+              (index, card) =>
+                  indices.contains(index) ? card : GameCard.unknown,
+            )
+            .toList();
+
+        final playerGame = GameHelpers.getInitialPlayerGameModel(
+          game: game,
+          player: player,
+        );
+        final updatedPlayerGame = playerGame.copyWith(
+          riverCards: seenRiverCards,
+        );
+
+        final json = ActionModel.game(
+          GameAction.updateGame(updatedPlayerGame),
+        ).toJson();
+        socket.sink.add(jsonEncode(json));
+
       case GameSwapWithPlayer():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameSwapWithPlayer not yet implemented");
+        return;
       case GameSwapWithRiver():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameSwapWithRiver not yet implemented");
+        return;
       case GameSwapOtherPlayers():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameSwapOtherPlayers not yet implemented");
+        return;
       case GameAssumeForm():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        logger.warning("GameAssumeForm not yet implemented");
+        return;
+      case GameEndTurn():
       case GameNone():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return;
       case GameStartGame():
         final player = await playerService.getPlayerById(socket.id);
         if (player == null) {
@@ -262,7 +314,7 @@ class ServerHandler {
           return;
         }
 
-        gameService.updateGame(game.copyWith(state: state));
+        await gameService.updateGame(game.copyWith(state: state));
     }
   }
 
@@ -282,14 +334,24 @@ class ServerHandler {
     _lobbyStartTimers[player.roomCode]?.cancel();
     _lobbyStartTimers.remove(player.roomCode);
 
-    await Future.wait([
-      lobbyService.removePlayerFromLobby(player.roomCode, player.id),
-      playerService.removePlayerById(socket.id),
-    ], eagerError: false);
+    await subscriptionManager.clear(socket.id);
+    await socketService.removeSocketById(socket.id);
+    await lobbyService.removePlayerFromLobby(player.roomCode, player.id);
+    await playerService.removePlayerById(socket.id);
+    await playerService.removePlayerGameById(socket.id);
     logger.info("Player ${socket.id} disconnected");
 
     final lobby = await lobbyService.getLobbyById(player.roomCode);
-    if (lobby != null && lobby.state == LobbyState.starting) {
+    if (lobby == null) {
+      logger.severe("Lobby with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    if (lobby.players.isEmpty) {
+      await lobbyService.removeLobbyById(lobby.id);
+    }
+
+    if (lobby.state == LobbyState.starting) {
       await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
     }
   }
@@ -349,5 +411,17 @@ class ServerHandler {
       ServerAction.joinLobby(player.nickname, lobby.id),
     ).toJson();
     socket.sink.add(jsonEncode(json));
+  }
+
+  String? _validateNickname(String nickname) {
+    if (nickname.isEmpty || nickname.length > 20) return null;
+    if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(nickname)) return null;
+    return nickname;
+  }
+
+  String? _validateRoomCode(String roomCode) {
+    if (roomCode.length != 6) return null;
+    if (!RegExp(r'^[0-9]+$').hasMatch(roomCode)) return null;
+    return roomCode;
   }
 }
