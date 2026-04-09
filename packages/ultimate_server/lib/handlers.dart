@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_server/domain/game/game_service.dart';
@@ -14,6 +15,7 @@ import 'package:ultimate_shared/models/actions/action_model.dart';
 import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
+import 'package:ultimate_shared/models/game_card.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
 import 'package:ultimate_shared/models/player_model.dart';
 import 'package:ultimate_shared/utils/id.dart';
@@ -57,7 +59,6 @@ class ServerHandler {
         _handleGameAction(gameAction, socket: socket);
       default:
         print(action);
-        break;
     }
   }
 
@@ -195,12 +196,39 @@ class ServerHandler {
       case GameCheckCard():
         // TODO: Handle this case.
         throw UnimplementedError();
-      case GameEndTurn():
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case GameCheckRiver():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case GameCheckRiver(:final indices):
+        final player = await playerService.getPlayerById(socket.id);
+        if (player == null) {
+          logger.severe("Player with ID '${socket.id}' not found");
+          return;
+        }
+
+        final game = await gameService.getGameById(player.roomCode);
+        if (game == null) {
+          logger.severe("Game with ID '${player.roomCode}' not found");
+          return;
+        }
+
+        final seenRiverCards = game.riverCards
+            .mapIndexed(
+              (index, card) =>
+                  indices.contains(index) ? card : GameCard.unknown,
+            )
+            .toList();
+
+        final playerGame = GameHelpers.getInitialPlayerGameModel(
+          game: game,
+          player: player,
+        );
+        final updatedPlayerGame = playerGame.copyWith(
+          riverCards: seenRiverCards,
+        );
+
+        final json = ActionModel.game(
+          GameAction.updateGame(updatedPlayerGame),
+        ).toJson();
+        socket.sink.add(jsonEncode(json));
+
       case GameSwapWithPlayer():
         // TODO: Handle this case.
         throw UnimplementedError();
@@ -213,9 +241,9 @@ class ServerHandler {
       case GameAssumeForm():
         // TODO: Handle this case.
         throw UnimplementedError();
+      case GameEndTurn():
       case GameNone():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return;
       case GameStartGame():
         final player = await playerService.getPlayerById(socket.id);
         if (player == null) {
@@ -262,7 +290,7 @@ class ServerHandler {
           return;
         }
 
-        gameService.updateGame(game.copyWith(state: state));
+        await gameService.updateGame(game.copyWith(state: state));
     }
   }
 
@@ -285,11 +313,21 @@ class ServerHandler {
     await Future.wait([
       lobbyService.removePlayerFromLobby(player.roomCode, player.id),
       playerService.removePlayerById(socket.id),
+      playerService.removePlayerGameById(socket.id),
     ], eagerError: false);
     logger.info("Player ${socket.id} disconnected");
 
     final lobby = await lobbyService.getLobbyById(player.roomCode);
-    if (lobby != null && lobby.state == LobbyState.starting) {
+    if (lobby == null) {
+      logger.severe("Lobby with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    if (lobby.players.isEmpty) {
+      await lobbyService.removeLobbyById(lobby.id);
+    }
+
+    if (lobby.state == LobbyState.starting) {
       await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
     }
   }

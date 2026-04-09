@@ -12,6 +12,8 @@ IGameService gameService(Ref ref) => MockGameService();
 abstract interface class IGameService {
   Future<GameModel?> getGameById(String id);
 
+  Future<void> removeGameById(String id);
+
   Stream<GameModel?> streamGameById(String id);
 
   Future<void> updateGame(GameModel game);

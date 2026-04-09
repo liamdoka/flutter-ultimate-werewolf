@@ -89,29 +89,15 @@ class Client extends _$Client {
 
     switch (action) {
       case GameSetCard():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameCheckCard():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameCheckRiver():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameSwapWithPlayer():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameSwapWithRiver():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameSwapOtherPlayers():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameAssumeForm():
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case GameStartGame():
-        // TODO: Handle this case.
         throw UnimplementedError();
+
       case GameUpdateGame(:final game):
         gameNotifier.setGame(game);
 

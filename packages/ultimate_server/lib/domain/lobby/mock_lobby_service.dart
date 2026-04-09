@@ -71,4 +71,10 @@ class MockLobbyService implements ILobbyService {
     _lobbies[id] = lobby.copyWith(players: newPlayers);
     _controller.add(_lobbies);
   }
+
+  @override
+  Future<void> removeLobbyById(String id) async {
+    _lobbies.remove(id);
+    _controller.add(_lobbies);
+  }
 }

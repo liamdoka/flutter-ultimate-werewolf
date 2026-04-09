@@ -24,4 +24,10 @@ class MockGameService implements IGameService {
     _games[game.id] = game;
     _controller.sink.add(_games);
   }
+
+  @override
+  Future<void> removeGameById(String id) async {
+    _games.remove(id);
+    _controller.sink.add(_games);
+  }
 }
