@@ -1,5 +1,8 @@
 part of 'handlers.dart';
 
+final _currentTurnCompletions = <String, Set<String>>{};
+final _dealingCompletions = <String, Set<String>>{};
+
 extension GameActionHandlers on ServerHandler {
   Future<void> _handleGameAction(
     GameAction action, {
@@ -21,6 +24,13 @@ extension GameActionHandlers on ServerHandler {
       case GameAssumeForm(:final target):
         await _handleAssumeForm(socket, target);
       case GameEndTurn():
+        await _handleEndTurn(socket);
+      case GameWakeUp(:final playerIds):
+        await _handleWakeUp(socket, playerIds);
+      case GameSleep():
+        await _handleSleep(socket);
+      case GameVote(:final target):
+        await _handleVote(socket, target);
       case GameNone():
         return;
       case GameStartGame():
@@ -42,6 +52,24 @@ extension GameActionHandlers on ServerHandler {
         if (game == null) {
           logger.severe("Game with ID '${player.roomCode}' not found");
           return;
+        }
+
+        if (game.state == GameState.dealing) {
+          if (!_dealingCompletions.containsKey(game.id)) {
+            _dealingCompletions[game.id] = {};
+          }
+          _dealingCompletions[game.id]!.add(player.id);
+
+          final allPlayers = await playerService.getAllPlayers();
+          final gamePlayerIds = allPlayers
+              .where((p) => p.roomCode == game.id)
+              .map((p) => p.id)
+              .toSet();
+
+          if (_dealingCompletions[game.id]!.containsAll(gamePlayerIds)) {
+            _dealingCompletions[game.id]!.clear();
+            await _transitionToPlaying(game);
+          }
         }
 
         final playerGame = GameHelpers.getInitialPlayerGameModel(
@@ -320,6 +348,210 @@ extension GameActionHandlers on ServerHandler {
         game: game,
         player: p,
       );
+
+      socket.send(.game(.updateGame(playerGame)));
+    }
+  }
+
+  Future<void> _handleEndTurn(WebSocketChannel socket) async {
+    final player = await playerService.getPlayerById(socket.id);
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    final game = await gameService.getGameById(player.roomCode);
+    if (game == null) {
+      logger.severe("Game with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    if (!_currentTurnCompletions.containsKey(game.id)) {
+      _currentTurnCompletions[game.id] = {};
+    }
+    _currentTurnCompletions[game.id]!.add(player.id);
+
+    final turnPlayerIds = GameHelpers.getCurrentTurnPlayerIds(game);
+    if (_currentTurnCompletions[game.id]!.containsAll(turnPlayerIds)) {
+      _currentTurnCompletions[game.id]!.clear();
+      await _advanceTurn(game);
+    }
+  }
+
+  Future<void> _advanceTurn(GameModel game) async {
+    final nextTurnIndex = game.currentTurnIndex + 1;
+    if (nextTurnIndex >= game.turns.length) {
+      await gameService.updateGame(game.copyWith(state: GameState.discussing));
+      await _broadcastStateUpdate(game.id, GameState.discussing);
+      return;
+    }
+
+    await gameService.updateGame(
+      game.copyWith(currentTurnIndex: nextTurnIndex),
+    );
+
+    final nextGame = await gameService.getGameById(game.id);
+    if (nextGame == null) return;
+
+    final nextTurnPlayerIds = GameHelpers.getCurrentTurnPlayerIds(nextGame);
+    await _broadcastWakeUp(nextGame.id, nextTurnPlayerIds);
+  }
+
+  Future<void> _transitionToPlaying(GameModel game) async {
+    await gameService.updateGame(game.copyWith(state: GameState.playing));
+    await _broadcastStateUpdate(game.id, GameState.playing);
+
+    final updatedGame = await gameService.getGameById(game.id);
+    if (updatedGame == null) return;
+
+    if (updatedGame.turns.isNotEmpty) {
+      final firstTurnPlayerIds = GameHelpers.getCurrentTurnPlayerIds(
+        updatedGame,
+      );
+      await _broadcastWakeUp(updatedGame.id, firstTurnPlayerIds);
+    }
+  }
+
+  Future<void> _handleWakeUp(
+    WebSocketChannel socket,
+    Set<String> playerIds,
+  ) async {
+    final player = await playerService.getPlayerById(socket.id);
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    final game = await gameService.getGameById(player.roomCode);
+    if (game == null) {
+      logger.severe("Game with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    final playerGame = GameHelpers.getInitialPlayerGameModel(
+      game: game,
+      player: player,
+    );
+    socket.send(.game(.updateGame(playerGame)));
+  }
+
+  Future<void> _handleSleep(WebSocketChannel socket) async {
+    final player = await playerService.getPlayerById(socket.id);
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    final game = await gameService.getGameById(player.roomCode);
+    if (game == null) {
+      logger.severe("Game with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    final playerGame = GameHelpers.getInitialPlayerGameModel(
+      game: game,
+      player: player,
+    );
+    socket.send(.game(.updateGame(playerGame)));
+  }
+
+  Future<void> _handleVote(WebSocketChannel socket, String target) async {
+    final player = await playerService.getPlayerById(socket.id);
+    if (player == null) {
+      logger.severe("Player with ID '${socket.id}' not found");
+      return;
+    }
+
+    final game = await gameService.getGameById(player.roomCode);
+    if (game == null) {
+      logger.severe("Game with ID '${player.roomCode}' not found");
+      return;
+    }
+
+    final updatedVotes = Map<String, String>.from(game.votes);
+    updatedVotes[player.id] = target;
+
+    final updatedGame = game.copyWith(votes: updatedVotes);
+    await gameService.updateGame(updatedGame);
+
+    final allPlayers = await playerService.getAllPlayers();
+    final gamePlayers = allPlayers
+        .where((p) => p.roomCode == game.id)
+        .map((p) => p.id)
+        .toSet();
+
+    if (updatedVotes.length >= gamePlayers.length) {
+      await _handleVotingComplete(updatedGame);
+    }
+  }
+
+  Future<void> _handleVotingComplete(GameModel game) async {
+    final winner = GameHelpers.calculateWinner(game);
+    await gameService.updateGame(
+      game.copyWith(state: GameState.ended, endCards: game.startCards),
+    );
+    await _broadcastStateUpdate(game.id, GameState.ended);
+    await _broadcastWinner(game.id, winner);
+  }
+
+  Future<void> _broadcastWakeUp(String gameId, Set<String> playerIds) async {
+    final players = await playerService.getAllPlayers();
+    final gamePlayers = players.where((p) => p.roomCode == gameId).toList();
+
+    for (final p in gamePlayers) {
+      final socket = await socketService.getSocketById(p.id);
+      if (socket == null) continue;
+
+      final isAwake = playerIds.contains(p.id);
+      if (isAwake) {
+        socket.send(.game(.wakeUp(playerIds)));
+      } else {
+        socket.send(.game(const GameAction.sleep()));
+      }
+    }
+  }
+
+  Future<void> _broadcastStateUpdate(String gameId, GameState state) async {
+    final players = await playerService.getAllPlayers();
+    final gamePlayers = players.where((p) => p.roomCode == gameId).toList();
+
+    for (final p in gamePlayers) {
+      final socket = await socketService.getSocketById(p.id);
+      if (socket == null) continue;
+
+      final game = await gameService.getGameById(gameId);
+      if (game == null) continue;
+
+      final player = await playerService.getPlayerById(p.id);
+      if (player == null) continue;
+
+      final playerGame = GameHelpers.getInitialPlayerGameModel(
+        game: game.copyWith(state: state),
+        player: player,
+      );
+
+      socket.send(.game(.updateGame(playerGame)));
+    }
+  }
+
+  Future<void> _broadcastWinner(String gameId, Winner? winner) async {
+    final players = await playerService.getAllPlayers();
+    final gamePlayers = players.where((p) => p.roomCode == gameId).toList();
+
+    for (final p in gamePlayers) {
+      final socket = await socketService.getSocketById(p.id);
+      if (socket == null) continue;
+
+      final game = await gameService.getGameById(gameId);
+      if (game == null) continue;
+
+      final player = await playerService.getPlayerById(p.id);
+      if (player == null) continue;
+
+      final playerGame = GameHelpers.getInitialPlayerGameModel(
+        game: game,
+        player: player,
+      ).copyWith(winner: winner);
 
       socket.send(.game(.updateGame(playerGame)));
     }

@@ -32,6 +32,15 @@ sealed class GameAction with _$GameAction {
   /// Used by the server to transition the game state for all players.
   const factory GameAction.updateGameState(GameState state) = GameUpdateState;
 
+  /// Used to signal to the current turn's players to wake up.
+  const factory GameAction.wakeUp(Set<String> playerIds) = GameWakeUp;
+
+  /// Used to signal to players to go to sleep.
+  const factory GameAction.sleep() = GameSleep;
+
+  /// Used by players to vote for who they think is a Blu Spy.
+  const factory GameAction.vote(String target) = GameVote;
+
   /// Used by players to request the first game state.
   const factory GameAction.initialize() = GameInitialize;
 

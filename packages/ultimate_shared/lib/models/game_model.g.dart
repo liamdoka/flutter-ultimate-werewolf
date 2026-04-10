@@ -28,9 +28,15 @@ _GameModel _$GameModelFromJson(Map<String, dynamic> json) => _GameModel(
           ?.map((e) => (e as List<dynamic>).map((e) => e as String).toSet())
           .toList() ??
       const [],
+  votes:
+      (json['votes'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ) ??
+      const {},
   state:
       $enumDecodeNullable(_$GameStateEnumMap, json['state']) ??
       GameState.dealing,
+  currentTurnIndex: (json['currentTurnIndex'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$GameModelToJson(
@@ -45,7 +51,9 @@ Map<String, dynamic> _$GameModelToJson(
   ),
   'riverCards': instance.riverCards.map((e) => _$GameCardEnumMap[e]!).toList(),
   'turns': instance.turns.map((e) => e.toList()).toList(),
+  'votes': instance.votes,
   'state': _$GameStateEnumMap[instance.state]!,
+  'currentTurnIndex': instance.currentTurnIndex,
 };
 
 const _$GameCardEnumMap = {
@@ -86,6 +94,7 @@ _PlayerGameModel _$PlayerGameModelFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$GameStateEnumMap, json['state']) ??
           GameState.dealing,
       isPlayerTurn: json['isPlayerTurn'] as bool? ?? false,
+      winner: $enumDecodeNullable(_$WinnerEnumMap, json['winner']),
     );
 
 Map<String, dynamic> _$PlayerGameModelToJson(
@@ -99,4 +108,7 @@ Map<String, dynamic> _$PlayerGameModelToJson(
   'riverCards': instance.riverCards.map((e) => _$GameCardEnumMap[e]!).toList(),
   'state': _$GameStateEnumMap[instance.state]!,
   'isPlayerTurn': instance.isPlayerTurn,
+  'winner': _$WinnerEnumMap[instance.winner],
 };
+
+const _$WinnerEnumMap = {Winner.team: 'team', Winner.bluSpy: 'bluSpy'};

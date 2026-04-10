@@ -80,6 +80,8 @@ abstract class GameHelpers {
     );
     playerCards[player.id] = playerCard;
 
+    final isPlayerTurn = _isPlayerTurn(game, player.id);
+
     final playerGame = PlayerGameModel(
       gameId: game.id,
       playerId: player.id,
@@ -88,8 +90,39 @@ abstract class GameHelpers {
         (_) => GameCard.unknown,
       ),
       playerCards: playerCards,
+      state: game.state,
+      isPlayerTurn: isPlayerTurn,
     );
 
     return playerGame;
+  }
+
+  static bool _isPlayerTurn(GameModel game, String playerId) {
+    if (game.state != GameState.playing) return false;
+    if (game.currentTurnIndex >= game.turns.length) return false;
+    final currentTurn = game.turns[game.currentTurnIndex];
+    return currentTurn.contains(playerId);
+  }
+
+  static Set<String> getCurrentTurnPlayerIds(GameModel game) {
+    if (game.currentTurnIndex >= game.turns.length) return {};
+    return game.turns[game.currentTurnIndex];
+  }
+
+  static Winner? calculateWinner(GameModel game) {
+    final bluSpyIds = game.startCards.entries
+        .where((e) => e.value == GameCard.bluSpy)
+        .map((e) => e.key)
+        .toSet();
+
+    final votedOutBluSpies = <String>{};
+    for (final votedPlayerId in game.votes.values) {
+      if (bluSpyIds.contains(votedPlayerId)) {
+        votedOutBluSpies.add(votedPlayerId);
+      }
+    }
+
+    if (votedOutBluSpies.isNotEmpty) return Winner.team;
+    return Winner.bluSpy;
   }
 }

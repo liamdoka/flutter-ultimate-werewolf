@@ -13,7 +13,13 @@ _LobbyModel _$LobbyModelFromJson(Map<String, dynamic> json) => _LobbyModel(
       (json['deck'] as List<dynamic>?)
           ?.map((e) => $enumDecode(_$GameCardEnumMap, e))
           .toList() ??
-      const [GameCard.bluSpy, GameCard.soldier, GameCard.soldier],
+      const [
+        GameCard.bluSpy,
+        GameCard.soldier,
+        GameCard.soldier,
+        GameCard.soldier,
+        GameCard.soldier,
+      ],
   state:
       $enumDecodeNullable(_$LobbyStateEnumMap, json['state']) ??
       LobbyState.waiting,

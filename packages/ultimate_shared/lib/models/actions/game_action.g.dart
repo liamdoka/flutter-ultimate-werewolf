@@ -135,6 +135,32 @@ const _$GameStateEnumMap = {
   GameState.ended: 'ended',
 };
 
+GameWakeUp _$GameWakeUpFromJson(Map<String, dynamic> json) => GameWakeUp(
+  (json['playerIds'] as List<dynamic>).map((e) => e as String).toSet(),
+  $type: json['runtimeType'] as String?,
+);
+
+Map<String, dynamic> _$GameWakeUpToJson(GameWakeUp instance) =>
+    <String, dynamic>{
+      'playerIds': instance.playerIds.toList(),
+      'runtimeType': instance.$type,
+    };
+
+GameSleep _$GameSleepFromJson(Map<String, dynamic> json) =>
+    GameSleep($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$GameSleepToJson(GameSleep instance) => <String, dynamic>{
+  'runtimeType': instance.$type,
+};
+
+GameVote _$GameVoteFromJson(Map<String, dynamic> json) =>
+    GameVote(json['target'] as String, $type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$GameVoteToJson(GameVote instance) => <String, dynamic>{
+  'target': instance.target,
+  'runtimeType': instance.$type,
+};
+
 GameInitialize _$GameInitializeFromJson(Map<String, dynamic> json) =>
     GameInitialize($type: json['runtimeType'] as String?);
 

@@ -59,6 +59,18 @@ GameAction _$GameActionFromJson(
           return GameUpdateState.fromJson(
             json
           );
+                case 'wakeUp':
+          return GameWakeUp.fromJson(
+            json
+          );
+                case 'sleep':
+          return GameSleep.fromJson(
+            json
+          );
+                case 'vote':
+          return GameVote.fromJson(
+            json
+          );
                 case 'initialize':
           return GameInitialize.fromJson(
             json
@@ -125,7 +137,7 @@ extension GameActionPatterns on GameAction {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GameSetCard value)?  setCard,TResult Function( GameCheckCard value)?  checkCard,TResult Function( GameEndTurn value)?  endTurn,TResult Function( GameCheckRiver value)?  checkRiver,TResult Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult Function( GameSwapWithRiver value)?  swapWithRiver,TResult Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult Function( GameAssumeForm value)?  assumeForm,TResult Function( GameStartGame value)?  startGame,TResult Function( GameUpdateGame value)?  updateGame,TResult Function( GameUpdateState value)?  updateGameState,TResult Function( GameInitialize value)?  initialize,TResult Function( GameNone value)?  none,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GameSetCard value)?  setCard,TResult Function( GameCheckCard value)?  checkCard,TResult Function( GameEndTurn value)?  endTurn,TResult Function( GameCheckRiver value)?  checkRiver,TResult Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult Function( GameSwapWithRiver value)?  swapWithRiver,TResult Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult Function( GameAssumeForm value)?  assumeForm,TResult Function( GameStartGame value)?  startGame,TResult Function( GameUpdateGame value)?  updateGame,TResult Function( GameUpdateState value)?  updateGameState,TResult Function( GameWakeUp value)?  wakeUp,TResult Function( GameSleep value)?  sleep,TResult Function( GameVote value)?  vote,TResult Function( GameInitialize value)?  initialize,TResult Function( GameNone value)?  none,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
@@ -139,7 +151,10 @@ return swapOtherPlayers(_that);case GameAssumeForm() when assumeForm != null:
 return assumeForm(_that);case GameStartGame() when startGame != null:
 return startGame(_that);case GameUpdateGame() when updateGame != null:
 return updateGame(_that);case GameUpdateState() when updateGameState != null:
-return updateGameState(_that);case GameInitialize() when initialize != null:
+return updateGameState(_that);case GameWakeUp() when wakeUp != null:
+return wakeUp(_that);case GameSleep() when sleep != null:
+return sleep(_that);case GameVote() when vote != null:
+return vote(_that);case GameInitialize() when initialize != null:
 return initialize(_that);case GameNone() when none != null:
 return none(_that);case _:
   return orElse();
@@ -159,7 +174,7 @@ return none(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GameSetCard value)  setCard,required TResult Function( GameCheckCard value)  checkCard,required TResult Function( GameEndTurn value)  endTurn,required TResult Function( GameCheckRiver value)  checkRiver,required TResult Function( GameSwapWithPlayer value)  swapWithPlayer,required TResult Function( GameSwapWithRiver value)  swapWithRiver,required TResult Function( GameSwapOtherPlayers value)  swapOtherPlayers,required TResult Function( GameAssumeForm value)  assumeForm,required TResult Function( GameStartGame value)  startGame,required TResult Function( GameUpdateGame value)  updateGame,required TResult Function( GameUpdateState value)  updateGameState,required TResult Function( GameInitialize value)  initialize,required TResult Function( GameNone value)  none,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GameSetCard value)  setCard,required TResult Function( GameCheckCard value)  checkCard,required TResult Function( GameEndTurn value)  endTurn,required TResult Function( GameCheckRiver value)  checkRiver,required TResult Function( GameSwapWithPlayer value)  swapWithPlayer,required TResult Function( GameSwapWithRiver value)  swapWithRiver,required TResult Function( GameSwapOtherPlayers value)  swapOtherPlayers,required TResult Function( GameAssumeForm value)  assumeForm,required TResult Function( GameStartGame value)  startGame,required TResult Function( GameUpdateGame value)  updateGame,required TResult Function( GameUpdateState value)  updateGameState,required TResult Function( GameWakeUp value)  wakeUp,required TResult Function( GameSleep value)  sleep,required TResult Function( GameVote value)  vote,required TResult Function( GameInitialize value)  initialize,required TResult Function( GameNone value)  none,}){
 final _that = this;
 switch (_that) {
 case GameSetCard():
@@ -173,7 +188,10 @@ return swapOtherPlayers(_that);case GameAssumeForm():
 return assumeForm(_that);case GameStartGame():
 return startGame(_that);case GameUpdateGame():
 return updateGame(_that);case GameUpdateState():
-return updateGameState(_that);case GameInitialize():
+return updateGameState(_that);case GameWakeUp():
+return wakeUp(_that);case GameSleep():
+return sleep(_that);case GameVote():
+return vote(_that);case GameInitialize():
 return initialize(_that);case GameNone():
 return none(_that);}
 }
@@ -189,7 +207,7 @@ return none(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GameSetCard value)?  setCard,TResult? Function( GameCheckCard value)?  checkCard,TResult? Function( GameEndTurn value)?  endTurn,TResult? Function( GameCheckRiver value)?  checkRiver,TResult? Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult? Function( GameSwapWithRiver value)?  swapWithRiver,TResult? Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult? Function( GameAssumeForm value)?  assumeForm,TResult? Function( GameStartGame value)?  startGame,TResult? Function( GameUpdateGame value)?  updateGame,TResult? Function( GameUpdateState value)?  updateGameState,TResult? Function( GameInitialize value)?  initialize,TResult? Function( GameNone value)?  none,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GameSetCard value)?  setCard,TResult? Function( GameCheckCard value)?  checkCard,TResult? Function( GameEndTurn value)?  endTurn,TResult? Function( GameCheckRiver value)?  checkRiver,TResult? Function( GameSwapWithPlayer value)?  swapWithPlayer,TResult? Function( GameSwapWithRiver value)?  swapWithRiver,TResult? Function( GameSwapOtherPlayers value)?  swapOtherPlayers,TResult? Function( GameAssumeForm value)?  assumeForm,TResult? Function( GameStartGame value)?  startGame,TResult? Function( GameUpdateGame value)?  updateGame,TResult? Function( GameUpdateState value)?  updateGameState,TResult? Function( GameWakeUp value)?  wakeUp,TResult? Function( GameSleep value)?  sleep,TResult? Function( GameVote value)?  vote,TResult? Function( GameInitialize value)?  initialize,TResult? Function( GameNone value)?  none,}){
 final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
@@ -203,7 +221,10 @@ return swapOtherPlayers(_that);case GameAssumeForm() when assumeForm != null:
 return assumeForm(_that);case GameStartGame() when startGame != null:
 return startGame(_that);case GameUpdateGame() when updateGame != null:
 return updateGame(_that);case GameUpdateState() when updateGameState != null:
-return updateGameState(_that);case GameInitialize() when initialize != null:
+return updateGameState(_that);case GameWakeUp() when wakeUp != null:
+return wakeUp(_that);case GameSleep() when sleep != null:
+return sleep(_that);case GameVote() when vote != null:
+return vote(_that);case GameInitialize() when initialize != null:
 return initialize(_that);case GameNone() when none != null:
 return none(_that);case _:
   return null;
@@ -222,7 +243,7 @@ return none(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( GameCard card)?  setCard,TResult Function( GameCard card)?  checkCard,TResult Function()?  endTurn,TResult Function( Set<int> indices)?  checkRiver,TResult Function( String target)?  swapWithPlayer,TResult Function( int index)?  swapWithRiver,TResult Function( Set<String> players)?  swapOtherPlayers,TResult Function( String target)?  assumeForm,TResult Function()?  startGame,TResult Function( PlayerGameModel game)?  updateGame,TResult Function( GameState state)?  updateGameState,TResult Function()?  initialize,TResult Function()?  none,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( GameCard card)?  setCard,TResult Function( GameCard card)?  checkCard,TResult Function()?  endTurn,TResult Function( Set<int> indices)?  checkRiver,TResult Function( String target)?  swapWithPlayer,TResult Function( int index)?  swapWithRiver,TResult Function( Set<String> players)?  swapOtherPlayers,TResult Function( String target)?  assumeForm,TResult Function()?  startGame,TResult Function( PlayerGameModel game)?  updateGame,TResult Function( GameState state)?  updateGameState,TResult Function( Set<String> playerIds)?  wakeUp,TResult Function()?  sleep,TResult Function( String target)?  vote,TResult Function()?  initialize,TResult Function()?  none,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
 return setCard(_that.card);case GameCheckCard() when checkCard != null:
@@ -235,7 +256,10 @@ return swapOtherPlayers(_that.players);case GameAssumeForm() when assumeForm != 
 return assumeForm(_that.target);case GameStartGame() when startGame != null:
 return startGame();case GameUpdateGame() when updateGame != null:
 return updateGame(_that.game);case GameUpdateState() when updateGameState != null:
-return updateGameState(_that.state);case GameInitialize() when initialize != null:
+return updateGameState(_that.state);case GameWakeUp() when wakeUp != null:
+return wakeUp(_that.playerIds);case GameSleep() when sleep != null:
+return sleep();case GameVote() when vote != null:
+return vote(_that.target);case GameInitialize() when initialize != null:
 return initialize();case GameNone() when none != null:
 return none();case _:
   return orElse();
@@ -255,7 +279,7 @@ return none();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( GameCard card)  setCard,required TResult Function( GameCard card)  checkCard,required TResult Function()  endTurn,required TResult Function( Set<int> indices)  checkRiver,required TResult Function( String target)  swapWithPlayer,required TResult Function( int index)  swapWithRiver,required TResult Function( Set<String> players)  swapOtherPlayers,required TResult Function( String target)  assumeForm,required TResult Function()  startGame,required TResult Function( PlayerGameModel game)  updateGame,required TResult Function( GameState state)  updateGameState,required TResult Function()  initialize,required TResult Function()  none,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( GameCard card)  setCard,required TResult Function( GameCard card)  checkCard,required TResult Function()  endTurn,required TResult Function( Set<int> indices)  checkRiver,required TResult Function( String target)  swapWithPlayer,required TResult Function( int index)  swapWithRiver,required TResult Function( Set<String> players)  swapOtherPlayers,required TResult Function( String target)  assumeForm,required TResult Function()  startGame,required TResult Function( PlayerGameModel game)  updateGame,required TResult Function( GameState state)  updateGameState,required TResult Function( Set<String> playerIds)  wakeUp,required TResult Function()  sleep,required TResult Function( String target)  vote,required TResult Function()  initialize,required TResult Function()  none,}) {final _that = this;
 switch (_that) {
 case GameSetCard():
 return setCard(_that.card);case GameCheckCard():
@@ -268,7 +292,10 @@ return swapOtherPlayers(_that.players);case GameAssumeForm():
 return assumeForm(_that.target);case GameStartGame():
 return startGame();case GameUpdateGame():
 return updateGame(_that.game);case GameUpdateState():
-return updateGameState(_that.state);case GameInitialize():
+return updateGameState(_that.state);case GameWakeUp():
+return wakeUp(_that.playerIds);case GameSleep():
+return sleep();case GameVote():
+return vote(_that.target);case GameInitialize():
 return initialize();case GameNone():
 return none();}
 }
@@ -284,7 +311,7 @@ return none();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( GameCard card)?  setCard,TResult? Function( GameCard card)?  checkCard,TResult? Function()?  endTurn,TResult? Function( Set<int> indices)?  checkRiver,TResult? Function( String target)?  swapWithPlayer,TResult? Function( int index)?  swapWithRiver,TResult? Function( Set<String> players)?  swapOtherPlayers,TResult? Function( String target)?  assumeForm,TResult? Function()?  startGame,TResult? Function( PlayerGameModel game)?  updateGame,TResult? Function( GameState state)?  updateGameState,TResult? Function()?  initialize,TResult? Function()?  none,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( GameCard card)?  setCard,TResult? Function( GameCard card)?  checkCard,TResult? Function()?  endTurn,TResult? Function( Set<int> indices)?  checkRiver,TResult? Function( String target)?  swapWithPlayer,TResult? Function( int index)?  swapWithRiver,TResult? Function( Set<String> players)?  swapOtherPlayers,TResult? Function( String target)?  assumeForm,TResult? Function()?  startGame,TResult? Function( PlayerGameModel game)?  updateGame,TResult? Function( GameState state)?  updateGameState,TResult? Function( Set<String> playerIds)?  wakeUp,TResult? Function()?  sleep,TResult? Function( String target)?  vote,TResult? Function()?  initialize,TResult? Function()?  none,}) {final _that = this;
 switch (_that) {
 case GameSetCard() when setCard != null:
 return setCard(_that.card);case GameCheckCard() when checkCard != null:
@@ -297,7 +324,10 @@ return swapOtherPlayers(_that.players);case GameAssumeForm() when assumeForm != 
 return assumeForm(_that.target);case GameStartGame() when startGame != null:
 return startGame();case GameUpdateGame() when updateGame != null:
 return updateGame(_that.game);case GameUpdateState() when updateGameState != null:
-return updateGameState(_that.state);case GameInitialize() when initialize != null:
+return updateGameState(_that.state);case GameWakeUp() when wakeUp != null:
+return wakeUp(_that.playerIds);case GameSleep() when sleep != null:
+return sleep();case GameVote() when vote != null:
+return vote(_that.target);case GameInitialize() when initialize != null:
 return initialize();case GameNone() when none != null:
 return none();case _:
   return null;
@@ -1057,6 +1087,197 @@ class _$GameUpdateStateCopyWithImpl<$Res>
   return _then(GameUpdateState(
 null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as GameState,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class GameWakeUp implements GameAction {
+  const GameWakeUp(final  Set<String> playerIds, {final  String? $type}): _playerIds = playerIds,$type = $type ?? 'wakeUp';
+  factory GameWakeUp.fromJson(Map<String, dynamic> json) => _$GameWakeUpFromJson(json);
+
+ final  Set<String> _playerIds;
+ Set<String> get playerIds {
+  if (_playerIds is EqualUnmodifiableSetView) return _playerIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_playerIds);
+}
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameWakeUpCopyWith<GameWakeUp> get copyWith => _$GameWakeUpCopyWithImpl<GameWakeUp>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameWakeUpToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameWakeUp&&const DeepCollectionEquality().equals(other._playerIds, _playerIds));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_playerIds));
+
+@override
+String toString() {
+  return 'GameAction.wakeUp(playerIds: $playerIds)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GameWakeUpCopyWith<$Res> implements $GameActionCopyWith<$Res> {
+  factory $GameWakeUpCopyWith(GameWakeUp value, $Res Function(GameWakeUp) _then) = _$GameWakeUpCopyWithImpl;
+@useResult
+$Res call({
+ Set<String> playerIds
+});
+
+
+
+
+}
+/// @nodoc
+class _$GameWakeUpCopyWithImpl<$Res>
+    implements $GameWakeUpCopyWith<$Res> {
+  _$GameWakeUpCopyWithImpl(this._self, this._then);
+
+  final GameWakeUp _self;
+  final $Res Function(GameWakeUp) _then;
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? playerIds = null,}) {
+  return _then(GameWakeUp(
+null == playerIds ? _self._playerIds : playerIds // ignore: cast_nullable_to_non_nullable
+as Set<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class GameSleep implements GameAction {
+  const GameSleep({final  String? $type}): $type = $type ?? 'sleep';
+  factory GameSleep.fromJson(Map<String, dynamic> json) => _$GameSleepFromJson(json);
+
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameSleepToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameSleep);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameAction.sleep()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class GameVote implements GameAction {
+  const GameVote(this.target, {final  String? $type}): $type = $type ?? 'vote';
+  factory GameVote.fromJson(Map<String, dynamic> json) => _$GameVoteFromJson(json);
+
+ final  String target;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameVoteCopyWith<GameVote> get copyWith => _$GameVoteCopyWithImpl<GameVote>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameVoteToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameVote&&(identical(other.target, target) || other.target == target));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,target);
+
+@override
+String toString() {
+  return 'GameAction.vote(target: $target)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GameVoteCopyWith<$Res> implements $GameActionCopyWith<$Res> {
+  factory $GameVoteCopyWith(GameVote value, $Res Function(GameVote) _then) = _$GameVoteCopyWithImpl;
+@useResult
+$Res call({
+ String target
+});
+
+
+
+
+}
+/// @nodoc
+class _$GameVoteCopyWithImpl<$Res>
+    implements $GameVoteCopyWith<$Res> {
+  _$GameVoteCopyWithImpl(this._self, this._then);
+
+  final GameVote _self;
+  final $Res Function(GameVote) _then;
+
+/// Create a copy of GameAction
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? target = null,}) {
+  return _then(GameVote(
+null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
