@@ -6,6 +6,8 @@ part 'game_model.g.dart';
 
 enum GameState { dealing, playing, discussing, voting, ended }
 
+enum Winner { team, bluSpy }
+
 @freezed
 sealed class GameModel with _$GameModel {
   const factory GameModel({
@@ -14,7 +16,9 @@ sealed class GameModel with _$GameModel {
     @Default({}) Map<String, GameCard> endCards,
     @Default([]) List<GameCard> riverCards,
     @Default([]) List<Set<String>> turns,
+    @Default({}) Map<String, String> votes,
     @Default(GameState.dealing) GameState state,
+    @Default(0) int currentTurnIndex,
   }) = _GameModel;
 
   factory GameModel.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +34,7 @@ sealed class PlayerGameModel with _$PlayerGameModel {
     @Default([]) List<GameCard> riverCards,
     @Default(GameState.dealing) GameState state,
     @Default(false) bool isPlayerTurn,
+    Winner? winner,
   }) = _PlayerGameModel;
 
   factory PlayerGameModel.fromJson(Map<String, dynamic> json) =>

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GameModel {
 
- String get id; Map<String, GameCard> get startCards; Map<String, GameCard> get endCards; List<GameCard> get riverCards; List<Set<String>> get turns; GameState get state;
+ String get id; Map<String, GameCard> get startCards; Map<String, GameCard> get endCards; List<GameCard> get riverCards; List<Set<String>> get turns; Map<String, String> get votes; GameState get state; int get currentTurnIndex;
 /// Create a copy of GameModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $GameModelCopyWith<GameModel> get copyWith => _$GameModelCopyWithImpl<GameModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameModel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.startCards, startCards)&&const DeepCollectionEquality().equals(other.endCards, endCards)&&const DeepCollectionEquality().equals(other.riverCards, riverCards)&&const DeepCollectionEquality().equals(other.turns, turns)&&(identical(other.state, state) || other.state == state));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameModel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.startCards, startCards)&&const DeepCollectionEquality().equals(other.endCards, endCards)&&const DeepCollectionEquality().equals(other.riverCards, riverCards)&&const DeepCollectionEquality().equals(other.turns, turns)&&const DeepCollectionEquality().equals(other.votes, votes)&&(identical(other.state, state) || other.state == state)&&(identical(other.currentTurnIndex, currentTurnIndex) || other.currentTurnIndex == currentTurnIndex));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(startCards),const DeepCollectionEquality().hash(endCards),const DeepCollectionEquality().hash(riverCards),const DeepCollectionEquality().hash(turns),state);
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(startCards),const DeepCollectionEquality().hash(endCards),const DeepCollectionEquality().hash(riverCards),const DeepCollectionEquality().hash(turns),const DeepCollectionEquality().hash(votes),state,currentTurnIndex);
 
 @override
 String toString() {
-  return 'GameModel(id: $id, startCards: $startCards, endCards: $endCards, riverCards: $riverCards, turns: $turns, state: $state)';
+  return 'GameModel(id: $id, startCards: $startCards, endCards: $endCards, riverCards: $riverCards, turns: $turns, votes: $votes, state: $state, currentTurnIndex: $currentTurnIndex)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $GameModelCopyWith<$Res>  {
   factory $GameModelCopyWith(GameModel value, $Res Function(GameModel) _then) = _$GameModelCopyWithImpl;
 @useResult
 $Res call({
- String id, Map<String, GameCard> startCards, Map<String, GameCard> endCards, List<GameCard> riverCards, List<Set<String>> turns, GameState state
+ String id, Map<String, GameCard> startCards, Map<String, GameCard> endCards, List<GameCard> riverCards, List<Set<String>> turns, Map<String, String> votes, GameState state, int currentTurnIndex
 });
 
 
@@ -65,15 +65,17 @@ class _$GameModelCopyWithImpl<$Res>
 
 /// Create a copy of GameModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? startCards = null,Object? endCards = null,Object? riverCards = null,Object? turns = null,Object? state = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? startCards = null,Object? endCards = null,Object? riverCards = null,Object? turns = null,Object? votes = null,Object? state = null,Object? currentTurnIndex = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,startCards: null == startCards ? _self.startCards : startCards // ignore: cast_nullable_to_non_nullable
 as Map<String, GameCard>,endCards: null == endCards ? _self.endCards : endCards // ignore: cast_nullable_to_non_nullable
 as Map<String, GameCard>,riverCards: null == riverCards ? _self.riverCards : riverCards // ignore: cast_nullable_to_non_nullable
 as List<GameCard>,turns: null == turns ? _self.turns : turns // ignore: cast_nullable_to_non_nullable
-as List<Set<String>>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
-as GameState,
+as List<Set<String>>,votes: null == votes ? _self.votes : votes // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as GameState,currentTurnIndex: null == currentTurnIndex ? _self.currentTurnIndex : currentTurnIndex // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -155,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  GameState state)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  Map<String, String> votes,  GameState state,  int currentTurnIndex)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GameModel() when $default != null:
-return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.state);case _:
+return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.votes,_that.state,_that.currentTurnIndex);case _:
   return orElse();
 
 }
@@ -176,10 +178,10 @@ return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  GameState state)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  Map<String, String> votes,  GameState state,  int currentTurnIndex)  $default,) {final _that = this;
 switch (_that) {
 case _GameModel():
-return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.state);}
+return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.votes,_that.state,_that.currentTurnIndex);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -193,10 +195,10 @@ return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  GameState state)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Map<String, GameCard> startCards,  Map<String, GameCard> endCards,  List<GameCard> riverCards,  List<Set<String>> turns,  Map<String, String> votes,  GameState state,  int currentTurnIndex)?  $default,) {final _that = this;
 switch (_that) {
 case _GameModel() when $default != null:
-return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.state);case _:
+return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.turns,_that.votes,_that.state,_that.currentTurnIndex);case _:
   return null;
 
 }
@@ -208,7 +210,7 @@ return $default(_that.id,_that.startCards,_that.endCards,_that.riverCards,_that.
 @JsonSerializable()
 
 class _GameModel implements GameModel {
-  const _GameModel({required this.id, final  Map<String, GameCard> startCards = const {}, final  Map<String, GameCard> endCards = const {}, final  List<GameCard> riverCards = const [], final  List<Set<String>> turns = const [], this.state = GameState.dealing}): _startCards = startCards,_endCards = endCards,_riverCards = riverCards,_turns = turns;
+  const _GameModel({required this.id, final  Map<String, GameCard> startCards = const {}, final  Map<String, GameCard> endCards = const {}, final  List<GameCard> riverCards = const [], final  List<Set<String>> turns = const [], final  Map<String, String> votes = const {}, this.state = GameState.dealing, this.currentTurnIndex = 0}): _startCards = startCards,_endCards = endCards,_riverCards = riverCards,_turns = turns,_votes = votes;
   factory _GameModel.fromJson(Map<String, dynamic> json) => _$GameModelFromJson(json);
 
 @override final  String id;
@@ -240,7 +242,15 @@ class _GameModel implements GameModel {
   return EqualUnmodifiableListView(_turns);
 }
 
+ final  Map<String, String> _votes;
+@override@JsonKey() Map<String, String> get votes {
+  if (_votes is EqualUnmodifiableMapView) return _votes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_votes);
+}
+
 @override@JsonKey() final  GameState state;
+@override@JsonKey() final  int currentTurnIndex;
 
 /// Create a copy of GameModel
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +265,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameModel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._startCards, _startCards)&&const DeepCollectionEquality().equals(other._endCards, _endCards)&&const DeepCollectionEquality().equals(other._riverCards, _riverCards)&&const DeepCollectionEquality().equals(other._turns, _turns)&&(identical(other.state, state) || other.state == state));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameModel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._startCards, _startCards)&&const DeepCollectionEquality().equals(other._endCards, _endCards)&&const DeepCollectionEquality().equals(other._riverCards, _riverCards)&&const DeepCollectionEquality().equals(other._turns, _turns)&&const DeepCollectionEquality().equals(other._votes, _votes)&&(identical(other.state, state) || other.state == state)&&(identical(other.currentTurnIndex, currentTurnIndex) || other.currentTurnIndex == currentTurnIndex));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_startCards),const DeepCollectionEquality().hash(_endCards),const DeepCollectionEquality().hash(_riverCards),const DeepCollectionEquality().hash(_turns),state);
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_startCards),const DeepCollectionEquality().hash(_endCards),const DeepCollectionEquality().hash(_riverCards),const DeepCollectionEquality().hash(_turns),const DeepCollectionEquality().hash(_votes),state,currentTurnIndex);
 
 @override
 String toString() {
-  return 'GameModel(id: $id, startCards: $startCards, endCards: $endCards, riverCards: $riverCards, turns: $turns, state: $state)';
+  return 'GameModel(id: $id, startCards: $startCards, endCards: $endCards, riverCards: $riverCards, turns: $turns, votes: $votes, state: $state, currentTurnIndex: $currentTurnIndex)';
 }
 
 
@@ -275,7 +285,7 @@ abstract mixin class _$GameModelCopyWith<$Res> implements $GameModelCopyWith<$Re
   factory _$GameModelCopyWith(_GameModel value, $Res Function(_GameModel) _then) = __$GameModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, Map<String, GameCard> startCards, Map<String, GameCard> endCards, List<GameCard> riverCards, List<Set<String>> turns, GameState state
+ String id, Map<String, GameCard> startCards, Map<String, GameCard> endCards, List<GameCard> riverCards, List<Set<String>> turns, Map<String, String> votes, GameState state, int currentTurnIndex
 });
 
 
@@ -292,15 +302,17 @@ class __$GameModelCopyWithImpl<$Res>
 
 /// Create a copy of GameModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? startCards = null,Object? endCards = null,Object? riverCards = null,Object? turns = null,Object? state = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? startCards = null,Object? endCards = null,Object? riverCards = null,Object? turns = null,Object? votes = null,Object? state = null,Object? currentTurnIndex = null,}) {
   return _then(_GameModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,startCards: null == startCards ? _self._startCards : startCards // ignore: cast_nullable_to_non_nullable
 as Map<String, GameCard>,endCards: null == endCards ? _self._endCards : endCards // ignore: cast_nullable_to_non_nullable
 as Map<String, GameCard>,riverCards: null == riverCards ? _self._riverCards : riverCards // ignore: cast_nullable_to_non_nullable
 as List<GameCard>,turns: null == turns ? _self._turns : turns // ignore: cast_nullable_to_non_nullable
-as List<Set<String>>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
-as GameState,
+as List<Set<String>>,votes: null == votes ? _self._votes : votes // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as GameState,currentTurnIndex: null == currentTurnIndex ? _self.currentTurnIndex : currentTurnIndex // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -311,7 +323,7 @@ as GameState,
 /// @nodoc
 mixin _$PlayerGameModel {
 
- String get gameId; String get playerId; Map<String, GameCard> get playerCards; List<GameCard> get riverCards; GameState get state; bool get isPlayerTurn;
+ String get gameId; String get playerId; Map<String, GameCard> get playerCards; List<GameCard> get riverCards; GameState get state; bool get isPlayerTurn; Winner? get winner;
 /// Create a copy of PlayerGameModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -324,16 +336,16 @@ $PlayerGameModelCopyWith<PlayerGameModel> get copyWith => _$PlayerGameModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlayerGameModel&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.playerId, playerId) || other.playerId == playerId)&&const DeepCollectionEquality().equals(other.playerCards, playerCards)&&const DeepCollectionEquality().equals(other.riverCards, riverCards)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPlayerTurn, isPlayerTurn) || other.isPlayerTurn == isPlayerTurn));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlayerGameModel&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.playerId, playerId) || other.playerId == playerId)&&const DeepCollectionEquality().equals(other.playerCards, playerCards)&&const DeepCollectionEquality().equals(other.riverCards, riverCards)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPlayerTurn, isPlayerTurn) || other.isPlayerTurn == isPlayerTurn)&&(identical(other.winner, winner) || other.winner == winner));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,gameId,playerId,const DeepCollectionEquality().hash(playerCards),const DeepCollectionEquality().hash(riverCards),state,isPlayerTurn);
+int get hashCode => Object.hash(runtimeType,gameId,playerId,const DeepCollectionEquality().hash(playerCards),const DeepCollectionEquality().hash(riverCards),state,isPlayerTurn,winner);
 
 @override
 String toString() {
-  return 'PlayerGameModel(gameId: $gameId, playerId: $playerId, playerCards: $playerCards, riverCards: $riverCards, state: $state, isPlayerTurn: $isPlayerTurn)';
+  return 'PlayerGameModel(gameId: $gameId, playerId: $playerId, playerCards: $playerCards, riverCards: $riverCards, state: $state, isPlayerTurn: $isPlayerTurn, winner: $winner)';
 }
 
 
@@ -344,7 +356,7 @@ abstract mixin class $PlayerGameModelCopyWith<$Res>  {
   factory $PlayerGameModelCopyWith(PlayerGameModel value, $Res Function(PlayerGameModel) _then) = _$PlayerGameModelCopyWithImpl;
 @useResult
 $Res call({
- String gameId, String playerId, Map<String, GameCard> playerCards, List<GameCard> riverCards, GameState state, bool isPlayerTurn
+ String gameId, String playerId, Map<String, GameCard> playerCards, List<GameCard> riverCards, GameState state, bool isPlayerTurn, Winner? winner
 });
 
 
@@ -361,7 +373,7 @@ class _$PlayerGameModelCopyWithImpl<$Res>
 
 /// Create a copy of PlayerGameModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? gameId = null,Object? playerId = null,Object? playerCards = null,Object? riverCards = null,Object? state = null,Object? isPlayerTurn = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? gameId = null,Object? playerId = null,Object? playerCards = null,Object? riverCards = null,Object? state = null,Object? isPlayerTurn = null,Object? winner = freezed,}) {
   return _then(_self.copyWith(
 gameId: null == gameId ? _self.gameId : gameId // ignore: cast_nullable_to_non_nullable
 as String,playerId: null == playerId ? _self.playerId : playerId // ignore: cast_nullable_to_non_nullable
@@ -369,7 +381,8 @@ as String,playerCards: null == playerCards ? _self.playerCards : playerCards // 
 as Map<String, GameCard>,riverCards: null == riverCards ? _self.riverCards : riverCards // ignore: cast_nullable_to_non_nullable
 as List<GameCard>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as GameState,isPlayerTurn: null == isPlayerTurn ? _self.isPlayerTurn : isPlayerTurn // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,winner: freezed == winner ? _self.winner : winner // ignore: cast_nullable_to_non_nullable
+as Winner?,
   ));
 }
 
@@ -451,10 +464,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn,  Winner? winner)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PlayerGameModel() when $default != null:
-return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn);case _:
+return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn,_that.winner);case _:
   return orElse();
 
 }
@@ -472,10 +485,10 @@ return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn,  Winner? winner)  $default,) {final _that = this;
 switch (_that) {
 case _PlayerGameModel():
-return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn);}
+return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn,_that.winner);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -489,10 +502,10 @@ return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String gameId,  String playerId,  Map<String, GameCard> playerCards,  List<GameCard> riverCards,  GameState state,  bool isPlayerTurn,  Winner? winner)?  $default,) {final _that = this;
 switch (_that) {
 case _PlayerGameModel() when $default != null:
-return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn);case _:
+return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_that.state,_that.isPlayerTurn,_that.winner);case _:
   return null;
 
 }
@@ -504,7 +517,7 @@ return $default(_that.gameId,_that.playerId,_that.playerCards,_that.riverCards,_
 @JsonSerializable()
 
 class _PlayerGameModel implements PlayerGameModel {
-  const _PlayerGameModel({required this.gameId, required this.playerId, final  Map<String, GameCard> playerCards = const {}, final  List<GameCard> riverCards = const [], this.state = GameState.dealing, this.isPlayerTurn = false}): _playerCards = playerCards,_riverCards = riverCards;
+  const _PlayerGameModel({required this.gameId, required this.playerId, final  Map<String, GameCard> playerCards = const {}, final  List<GameCard> riverCards = const [], this.state = GameState.dealing, this.isPlayerTurn = false, this.winner}): _playerCards = playerCards,_riverCards = riverCards;
   factory _PlayerGameModel.fromJson(Map<String, dynamic> json) => _$PlayerGameModelFromJson(json);
 
 @override final  String gameId;
@@ -525,6 +538,7 @@ class _PlayerGameModel implements PlayerGameModel {
 
 @override@JsonKey() final  GameState state;
 @override@JsonKey() final  bool isPlayerTurn;
+@override final  Winner? winner;
 
 /// Create a copy of PlayerGameModel
 /// with the given fields replaced by the non-null parameter values.
@@ -539,16 +553,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerGameModel&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.playerId, playerId) || other.playerId == playerId)&&const DeepCollectionEquality().equals(other._playerCards, _playerCards)&&const DeepCollectionEquality().equals(other._riverCards, _riverCards)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPlayerTurn, isPlayerTurn) || other.isPlayerTurn == isPlayerTurn));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerGameModel&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.playerId, playerId) || other.playerId == playerId)&&const DeepCollectionEquality().equals(other._playerCards, _playerCards)&&const DeepCollectionEquality().equals(other._riverCards, _riverCards)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPlayerTurn, isPlayerTurn) || other.isPlayerTurn == isPlayerTurn)&&(identical(other.winner, winner) || other.winner == winner));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,gameId,playerId,const DeepCollectionEquality().hash(_playerCards),const DeepCollectionEquality().hash(_riverCards),state,isPlayerTurn);
+int get hashCode => Object.hash(runtimeType,gameId,playerId,const DeepCollectionEquality().hash(_playerCards),const DeepCollectionEquality().hash(_riverCards),state,isPlayerTurn,winner);
 
 @override
 String toString() {
-  return 'PlayerGameModel(gameId: $gameId, playerId: $playerId, playerCards: $playerCards, riverCards: $riverCards, state: $state, isPlayerTurn: $isPlayerTurn)';
+  return 'PlayerGameModel(gameId: $gameId, playerId: $playerId, playerCards: $playerCards, riverCards: $riverCards, state: $state, isPlayerTurn: $isPlayerTurn, winner: $winner)';
 }
 
 
@@ -559,7 +573,7 @@ abstract mixin class _$PlayerGameModelCopyWith<$Res> implements $PlayerGameModel
   factory _$PlayerGameModelCopyWith(_PlayerGameModel value, $Res Function(_PlayerGameModel) _then) = __$PlayerGameModelCopyWithImpl;
 @override @useResult
 $Res call({
- String gameId, String playerId, Map<String, GameCard> playerCards, List<GameCard> riverCards, GameState state, bool isPlayerTurn
+ String gameId, String playerId, Map<String, GameCard> playerCards, List<GameCard> riverCards, GameState state, bool isPlayerTurn, Winner? winner
 });
 
 
@@ -576,7 +590,7 @@ class __$PlayerGameModelCopyWithImpl<$Res>
 
 /// Create a copy of PlayerGameModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? gameId = null,Object? playerId = null,Object? playerCards = null,Object? riverCards = null,Object? state = null,Object? isPlayerTurn = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? gameId = null,Object? playerId = null,Object? playerCards = null,Object? riverCards = null,Object? state = null,Object? isPlayerTurn = null,Object? winner = freezed,}) {
   return _then(_PlayerGameModel(
 gameId: null == gameId ? _self.gameId : gameId // ignore: cast_nullable_to_non_nullable
 as String,playerId: null == playerId ? _self.playerId : playerId // ignore: cast_nullable_to_non_nullable
@@ -584,7 +598,8 @@ as String,playerCards: null == playerCards ? _self._playerCards : playerCards //
 as Map<String, GameCard>,riverCards: null == riverCards ? _self._riverCards : riverCards // ignore: cast_nullable_to_non_nullable
 as List<GameCard>,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as GameState,isPlayerTurn: null == isPlayerTurn ? _self.isPlayerTurn : isPlayerTurn // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,winner: freezed == winner ? _self.winner : winner // ignore: cast_nullable_to_non_nullable
+as Winner?,
   ));
 }
 

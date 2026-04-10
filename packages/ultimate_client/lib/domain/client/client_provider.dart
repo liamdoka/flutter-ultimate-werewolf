@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ultimate_client/domain/game_provider.dart';
 import 'package:ultimate_client/domain/lobby/lobby_provider.dart';
@@ -144,6 +142,9 @@ class Client extends _$Client {
       case GameUpdateState(state: final gameState):
         gameNotifier.setState(gameState);
 
+      case GameWakeUp():
+      case GameSleep():
+      case GameVote():
       case GameInitialize():
       case GameEndTurn():
       case GameNone():
