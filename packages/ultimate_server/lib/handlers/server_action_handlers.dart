@@ -64,7 +64,7 @@ extension ServerActionHandlers on ServerHandler {
           return;
         }
 
-        socket.send(ActionModel.server(ServerAction.updateLobby(lobby)));
+        socket.send(.server(.updateLobby(lobby)));
 
       case ServerUnknown():
         logger.warning("Unknown server action");
@@ -189,31 +189,22 @@ extension ServerActionHandlers on ServerHandler {
     await playerService.addPlayer(player);
     await lobbyService.addPlayerToLobby(lobby.id, player);
 
-    final lobbyStream = lobbyService.streamLobbyById(lobby.id).distinct().map((
-      update,
-    ) {
-      logger.info("Syncing lobby ${update?.id} to ${socket.id}");
-      if (update == null) return null;
+    final subscription = lobbyService
+        .streamLobbyById(lobby.id)
+        .distinct()
+        .listen((update) {
+          logger.info("Syncing lobby ${update?.id} to ${socket.id}");
+          if (update == null) return;
+          socket.send(.server(.updateLobby(update)));
+        });
 
-      socket.send(.server(.updateLobby(update)));
-    });
-
-    final subscription = lobbyStream.listen(socket.sink.add);
     subscriptionManager.add(socket.id, subscription);
 
-    socket.send(
-      ActionModel.server(ServerAction.joinLobby(player.nickname, lobby.id)),
-    );
+    socket.send(.server(.joinLobby(player.nickname, lobby.id)));
   }
 
   Future<void> handleDisconnect(WebSocketChannel socket) async {
     final player = await playerService.getPlayerById(socket.id);
-
-    await Future.wait([
-      subscriptionManager.clear(socket.id),
-      socketService.removeSocketById(socket.id),
-    ], eagerError: false);
-
     if (player == null) {
       logger.severe("Player with ID '${socket.id}' not found");
       return;
@@ -235,12 +226,12 @@ extension ServerActionHandlers on ServerHandler {
       return;
     }
 
-    if (lobby.players.isEmpty) {
-      await lobbyService.removeLobbyById(lobby.id);
-    }
-
     if (lobby.state == LobbyState.starting) {
       await lobbyService.updateLobby(lobby.copyWith(state: LobbyState.waiting));
+    }
+
+    if (lobby.players.isEmpty) {
+      await lobbyService.removeLobbyById(lobby.id);
     }
   }
 }
