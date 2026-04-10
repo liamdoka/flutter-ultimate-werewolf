@@ -11,6 +11,7 @@ import 'package:ultimate_shared/models/actions/client_action.dart';
 import 'package:ultimate_shared/models/actions/game_action.dart';
 import 'package:ultimate_shared/models/actions/server_action.dart';
 import 'package:ultimate_shared/models/lobby_model.dart';
+import 'package:ultimate_shared/utils/socket.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'client_provider.g.dart';
@@ -73,13 +74,11 @@ class Client extends _$Client {
   void send(ClientAction action) => _handleClientAction(action);
 
   void sendServerAction(ServerAction action) {
-    final json = ActionModel.server(action).toJson();
-    state.socket.sink.add(jsonEncode(json));
+    state.socket.send(.server(action));
   }
 
   void sendGameAction(GameAction action) {
-    final json = ActionModel.game(action).toJson();
-    state.socket.sink.add(jsonEncode(json));
+    state.socket.send(.game(action));
   }
 
   void _handleAction(ActionModel action) {
